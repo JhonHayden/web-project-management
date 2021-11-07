@@ -1,5 +1,5 @@
 # WebProjectManagement
-
+===
 
 Aplicación web que permite un modelo de sistema de información
 que soporta la gestión de proyectos de investigación de las universidades
@@ -22,25 +22,26 @@ que soporta la gestión de proyectos de investigación de las universidades
 14. Express
 15. GraphQL
 
-
 ______________________________________________________________________________________________________________________________________________________________
 # Scrum Team 
 ______________________________________________________________________________________________________________________________________________________________
 
-Product Owner: Stefania Jimenez Valencia
+Product Owner: Stefania Jimenez Valencia<br/>
 Usuario Cuenta GitHub: sjimenezv16
 
-Scrum Master: Jhon hayden Ospina Loaiza 
+Scrum Master: Jhon hayden Ospina Loaiza<br/> 
 Usuario Cuenta GitHub: JhonHayden
 
-Analista: Jhonny Ospina Loaiza 
+Development Team:
+
+Developer: Arlex Jimenez Lopez<br/>
+Usuario Cuenta GitHub: ajimenezl0608
+
+Analista: Jhonny Ospina Loaiza <br/>
 Usuario Cuenta GitHub: jole4f4
 
-Administrador de BD: Junior Alexander Ospina Loaiza
+Administrador de BD: Junior Alexander Ospina Loaiza<br/>
 Usuario Cuenta GitHub: Alex1988ander
-
-
-
 
 
 ________________________________________________________________________________________________________________
@@ -48,21 +49,26 @@ ________________________________________________________________________________
 # Módulos del Proyecto:
 
 ## • Módulo de gestión de usuarios.
-*
-       **Gestión de ingreso al sistema de información.** El sistema tendrá las
-        interfaces gráficas para el registro e ingreso a la aplicación. Para el registro
+
+###     Gestión de ingreso al sistema de información:
+        El sistema tendrá las interfaces gráficas para 
+        el registro e ingreso a la aplicación. Para el registro
         se deberá ingresar el correo, identificación, nombre completo y contraseña,
         además el usuario podrá seleccionar qué tipo de usuario desempeñará en la
         plataforma (Estudiante, líder o administrador), el usuario quedará registrado
         en el sistema por defecto con el estado de pendiente (Independientemente
         si se registra como administrador, líder o estudiante). Para la autenticación
         el usuario debe ingresar el correo y la contraseña.
-        **Gestión de estado de usuarios.** El sistema tendrá una interfaz gráfica
+
+###     Gestión de estado de usuarios: 
+        El sistema tendrá una interfaz gráfica
         para que el administrador pueda ver y cambiar el estado de los registrados
         como administrador, líder y estudiante (Pendiente/Autorizado/No
         autorizado), un líder puede cambiar el estado de los usuarios registrados
         como estudiantes (Pendiente/Autorizado).
-        **Gestión de perfil.** El sistema tendrá una interfaz gráfica para que el
+        
+###     Gestión de perfil: 
+        El sistema tendrá una interfaz gráfica para que el
         investigador o estudiante pueda actualizar los datos personales que ingresó
         cuando se registró (Incluyendo la contraseña).
 
@@ -98,3 +104,14 @@ ________________________________________________________________________________
         del proyecto se actualice a terminada o el estado del proyecto sea actualizado a
         inactivo.
 
+## • Módulo de gestión de avances. 
+
+        El sistema tendrá una interfaz para que los
+        estudiantes registren los avances y otra para que los estudiantes y líderes
+        puedan listar los avances, solo los estudiantes podrán actualizar los avances del
+        proyecto en el que están inscritos, y el líder sólo podrá añadir sus observaciones
+        a dicho avance. Cada avance debe contar con los siguientes atributos:
+        Identificador único del avance (inmutable), el identificador del proyecto (para
+        relacionarlo), la fecha del avance, la descripción del avance donde se especifique
+        cuáles fueron los aportes a los objetivos del proyecto, y las observaciones del
+        líder.
