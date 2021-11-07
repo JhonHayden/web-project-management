@@ -33,13 +33,11 @@ Usuario Cuenta GitHub: sjimenezv16
 Scrum Master: Jhon hayden Ospina Loaiza 
 Usuario Cuenta GitHub: JhonHayden
 
+Analista: Jhonny Ospina Loaiza 
+Usuario Cuenta GitHub: jole4f4
+
 Administrador de BD: Junior Alexander Ospina Loaiza
 Usuario Cuenta GitHub: Alex1988ander
-
-
-
-
-
 
 
 
@@ -50,8 +48,8 @@ ________________________________________________________________________________
 # Módulos del Proyecto:
 
 ## • Módulo de gestión de usuarios.
-
-        **Gestión de ingreso al sistema de información.** El sistema tendrá las
+*
+       **Gestión de ingreso al sistema de información.** El sistema tendrá las
         interfaces gráficas para el registro e ingreso a la aplicación. Para el registro
         se deberá ingresar el correo, identificación, nombre completo y contraseña,
         además el usuario podrá seleccionar qué tipo de usuario desempeñará en la
@@ -85,4 +83,18 @@ ________________________________________________________________________________
         (activo/inactivo) que será por defecto inactivo, y la fase del proyecto (iniciado, en
         desarrollo, terminado) que será nula por defecto.
 
+## • Módulo de gestión de inscripciones. 
+
+        Cómo se mencionó en el módulo de gestión de proyectos 
+        los estudiantes podrán inscribirse a un proyecto, si aún no
+        lo están, mediante la interfaz que lista los proyectos presionando un botón que
+        generará la inscripción. El sistema tendrá una interfaz para que los líderes de
+        cada proyecto puedan listar las inscripciones y definir sus estados. Cada
+        inscripción tendrá los siguientes atributos: Identificador único (inmutable), los
+        identificadores del proyecto y estudiante (para relacionarlos), el estado de la
+        inscripción (aceptada/rechazada), la fecha de ingreso, que se pondrá
+        automáticamente cuando el líder actualice el estado de la inscripción a
+        aceptada; y la fecha de egreso, que se pondrá automáticamente cuando la fase
+        del proyecto se actualice a terminada o el estado del proyecto sea actualizado a
+        inactivo.
 
