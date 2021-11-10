@@ -1,13 +1,23 @@
-Equipo MAGISTRAL
+                                 Equipo MAGISTRAL
 
 ____________________________________________________________________________________________________________________________
+
+Product Owner: Stefania Jimenez Valencia
+Usuario Cuenta GitHub: sjimenezv16
+
+Actualmente estudiante de la universidad de Antioquia, tripulante del programa Misión Tic 2022,
+Ingeniera Electrónica, me encantan, la programación, la lectura, las matemáticas, las ciencias y la docencia.
+
+____________________________________________________________________________________________________________________________
+
 Scrum Master: Jhon hayden Ospina Loaiza
 Usuario Cuenta GitHub: JhonHayden
 
 Ingeniero Electrónico y estudiante Misión TIC 2022 en la Universidad de Antioquia
 Soy autodidacta, apasionado, dinámico, creativo y comprometido.
 Tengo como meta ser un excelente desarrollador de software 
-______________________________________________________________________________________________________________________________
+
+____________________________________________________________________________________________________________________________
 
 Administrador de BD: Junior Alexander Ospina Loaiza
 Usuario Cuenta GitHub: Alex1988ander
@@ -15,4 +25,4 @@ Usuario Cuenta GitHub: Alex1988ander
 Tecnólogo en construcción y tripulante de MisionTic 2022, 
 la idea es aprender y poder emprender independientemente
 
-_______________________________________________________________________________________________________________________________
+____________________________________________________________________________________________________________________________
