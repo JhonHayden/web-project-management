@@ -1,5 +1,13 @@
 Equipo MAGISTRAL
 
+____________________________________________________________________________________________________________________________
+Scrum Master: Jhon hayden Ospina Loaiza
+Usuario Cuenta GitHub: JhonHayden
+
+Ingeniero Electrónico y estudiante Misión TIC 2022 en la Universidad de Antioquia
+Soy autodidacta, apasionado, dinámico, creativo y comprometido.
+Tengo como meta ser un excelente desarrollador de software 
+______________________________________________________________________________________________________________________________
 
 Administrador de BD: Junior Alexander Ospina Loaiza
 Usuario Cuenta GitHub: Alex1988ander
@@ -7,4 +15,4 @@ Usuario Cuenta GitHub: Alex1988ander
 Tecnólogo en construcción y tripulante de MisionTic 2022, 
 la idea es aprender y poder emprender independientemente
 
-
+_______________________________________________________________________________________________________________________________
