@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid';
 const DropDown = ({ label, name, defaultValue = '', required, options }) => {
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const optionsSelect = [['', 'Seleccione una opción', true], ...Object.entries(options)];
-  console.log ('soy optionsSelect : ',optionsSelect);
+  // console.log ('soy optionsSelect : ',optionsSelect);
 
   // optionsSelecte contiene lo siguiente si en options le pasamos el objeto Enum_EstadoUsuario
 

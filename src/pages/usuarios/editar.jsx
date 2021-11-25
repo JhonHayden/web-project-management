@@ -9,7 +9,7 @@ import useFormData from 'hooks/useFormData';
 import { toast } from 'react-toastify';
 import { EDITAR_USUARIO } from 'graphql/usuarios/mutations'; // template de graphql de la mutacion editarUsuario 
 import DropDown from 'components/Dropdown';
-import { Enum_EstadoUsuario } from 'utils/enum';
+import { Enum_EstadoUsuario } from 'utils/enums';
 
 const EditarUsuario = () => {
   const { form, formData, updateFormData } = useFormData(null);// uso el hook personalizado para capturar
@@ -36,14 +36,19 @@ const EditarUsuario = () => {
     // esto sucede la primera ves, trae los dtaos desde el backend y lo deja en la cache y luego las demas veces solo consulta la informacion desde 
     // la cache y hace que la navegacion sea rapida la carga de los datos .. 
 
+
     data: queryData,// datos de un usuario consultado a traves de _id con el hook useQuery 
     error: queryError,
     loading: queryLoading,
   } = useQuery(GET_USUARIO, {// este query requiere un input 
-    variables: { _id },// esta es la forma de enviarle el input le enviamos el input establecido en el 
+    variables: { _id },// esta es la forma de enviarle el input. le enviamos el input establecido en el 
     // resolver del servidor para este query en el metodo findOneAndUpdate({ _id:args._id } y es el _id solo el 
     // _id = tiene almacenado en valor capturado escrito en la url despues de los dos puntos con el useParams y es 
     // el _id original de un usuario almacenado en la bases de datos
+
+    // useQuery me entrega tres estados y tambien guardan en cache la informacion asi cuando se consulta de nuevo sin actualizar 
+    // la pagina traen la informacion no de la base de datos si no desde el cache y asi la navegacion se hace mucho mas 
+    // rapido 
   });
 
   console.log(queryData);

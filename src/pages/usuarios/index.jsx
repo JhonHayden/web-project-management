@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';// Hook que permite hacer las consulta
 import { GET_USUARIOS } from 'graphql/usuarios/queries';// template o plantilla de consulta de Usuarios string de graphql
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';// me permite hacer enlaces y navegar  a otras paginas 
-import { Enum_Rol, Enum_EstadoUsuario } from 'utils/enum';
+import { Enum_Rol, Enum_EstadoUsuario } from 'utils/enums';
 
 const IndexUsuarios = () => {
   const { data, error, loading } = useQuery(GET_USUARIOS);// al hook le paso como parametro que es la

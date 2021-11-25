@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-
+// estos templates son tal cual como se hacen en el explorer de ApolloStudio 
 // Mutacion:    mutation nombreMutacionqueyoquiera(declaracionVariables input: con su tipo )
 //              {
 //                  nombre de mutacion definida como esta el backend tal cual(
