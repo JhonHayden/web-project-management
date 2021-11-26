@@ -9,11 +9,16 @@ import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router';// hook paara redireccionar al home o a cualquier pagina deacuerdo a la ruta
 // que le demos 
 import { Enum_Rol } from 'utils/enums';
+import { useAuth } from 'context/authContext';// importo el contexto de autenticacion 
 
 
 // Pagina de registro 
 
 const Register = () => {
+
+  const { setToken } = useAuth();// permite traer y poder usar la funcion de guardar el token tanto en el estado como en el local 
+  // storage pero como string gracias al JSON.stringify() que tiene dentro esta funcion de setToken
+
   const navigate = useNavigate();// uso del hook para redireccionar a otra pagina en este caso 
   // lo usaremos para direcionar al home cuando el usuario ya se registro y existe token 
   const { form, formData, updateFormData } = useFormData();// uso el hook personalizado para capturar
@@ -44,8 +49,12 @@ const Register = () => {
       // salte error en la siguiente if .. dado que en un principio dataMutation es null entonces el siguiente if 
       // fallaria si no esta el primer if  
       if (dataMutation.registro.token) {// si tiene el token sigue lo siguiente 
-        localStorage.setItem('token', dataMutation.registro.token);// me permite guardar el token en el local 
-        // storage el primer parametro es la clave y el segundo es el token el value 
+
+        setToken(dataMutation.registro.token);// llamado de la funcion de guardar el token tanto en el estado como en el local 
+        // storage pero como string gracias al JSON.stringify() que tiene dentro esta funcion de setToken
+
+        // localStorage.setItem('token', dataMutation.registro.token);// otra forma que me permite guardar el token en el local 
+        // storage el primer parametro es la clave y el segundo es el token el value .. 
         navigate('/');  // me permite que cuando recibe el token es decir exista token dentro de la datamutation 
         // que retorna la mutacion cuando termina de hacer su trabajo en esta data esta dentro el token si 
         // hay token  navigate me direcciona al home ('/')
@@ -72,9 +81,9 @@ const Register = () => {
         />
       </form>
       <span>¿Ya tienes una cuenta?</span>
-      {/* <Link to='/auth/login'>
+      <Link to='/auth/login'> {/**me permite dirigirme al inicio de sesion, pagina login */}
         <span className='text-blue-700'>Inicia sesión</span>
-      </Link> */}
+      </Link>
     </div>
   );
 };

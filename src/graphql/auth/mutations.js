@@ -24,27 +24,39 @@ import { gql } from '@apollo/client';
 const REGISTRO = gql`
 
 
-mutation Registro(
-    
-    $identificacion: String!,
-    $nombre: String!,
-    $apellido: String!,
-    $correo: String!,
-    $rol: Enum_RolUsuario!,
-    $password: String!
-    ) {
+  mutation Registro(
+      
+      $identificacion: String!,
+      $nombre: String!,
+      $apellido: String!,
+      $correo: String!,
+      $rol: Enum_RolUsuario!,
+      $password: String!
+      ) {
 
-  registro(
-        identificacion: $identificacion,
-        nombre: $nombre, 
-        apellido: $apellido, 
-        correo: $correo, 
-        rol: $rol, 
-        password: $password
-        ){
-          token
-          error
-        }
-}`;
+    registro(
+          identificacion: $identificacion,
+          nombre: $nombre, 
+          apellido: $apellido, 
+          correo: $correo, 
+          rol: $rol, 
+          password: $password
+          ){
+            token
+            error
+          }
+      }`;
 
-export {REGISTRO};
+const LOGIN = gql`
+
+  mutation Login($correo: String!, $password: String!) {
+
+    login(correo: $correo, password: $password)
+     {
+      token
+      error
+    }
+  }
+`;
+
+export {REGISTRO,LOGIN};
