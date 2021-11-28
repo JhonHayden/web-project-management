@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PrivateLayout from 'layouts/PrivateLayout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { UserContext } from 'context/userContext';
 import { AuthContext } from 'context/authContext';
 import { ApolloProvider, ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';// funciones de
 // apollo client para su implementacion .. para inicializar un cliente de apollo
+import { setContext } from '@apollo/client/link/context';// funcionalidad de apollo client para enviar en los request 
+// en sus headers el token 
 import Index from 'pages/Index';
 import Page2 from 'pages/Page2';
 import IndexCategory1 from 'pages/category1/Index';
@@ -16,16 +18,36 @@ import 'styles/tabla.css';
 import AuthLayout from 'layouts/AuthLayout';
 import Register from 'pages/auth/Register';
 import Login from 'pages/auth/Login';
+import jwt_decode from "jwt-decode";// me permite usar la libreria que me decodifica el token 
+
 
 // import PrivateRoute from 'components/PrivateRoute';
 
-// const httpLink = createHttpLink({ // dentra la url del servidor de apollo sever .. es decir mi backend 
-//   uri: 'https://servidor-gql-mintic.herokuapp.com/graphql',
-// });
+const httpLink = createHttpLink({ // entra a la url del servidor de apollo sever .. es decir mi backend 
+  uri: 'http://localhost:4000/graphql',
+});
+
+const authLink = setContext((_, { headers }) => {// setContext es un contexto de apollo client para permitirme
+  // enviar en los headers de cada request, del frontend al backend,  el token  
+
+  // get the authentication token from local storage if it exists
+  const token = JSON.parse(localStorage.getItem('token'));// me obtiene el toque desde el local storage dado que 
+  // hay lo guardamos en un principio cuando hace el login el usuario o se registra igualmente 
+  // y lo pasa a formato JSON
+
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {// retorno en los headers el token 
+      ...headers,// me agrega todo lo que ya tiene el headers 
+      authorization: token ? `Bearer ${token}` : '',// si hay token pone en el atributo authorization el valor de
+      // Bearer  y el token si no hay token pone vacio  --> ' ' 
+    },
+  };
+});
+
 
 const client = new ApolloClient({// instancia o objeto de ApolloClient recibe muchisimos parametros pero por ahora los basicos son 
-  uri: 'http://localhost:4000/graphql', // parmetro de la URL al cual se conectara el cliente de apollo es decir 
-  // aqui va la url del backend 
+
   cache: new InMemoryCache(),// parametro de politica de cacheo  me permite cuando recibo informacion 
   // desde el backend guardarla en  la cache del navegador para despues utilizar y optimizar la velocidad de carga de la aplicacion 
   // la politica de cache me permite configurar el comportamiento de la aplicacion de que hacer con la informacion 
@@ -35,6 +57,9 @@ const client = new ApolloClient({// instancia o objeto de ApolloClient recibe mu
 
   //cachees una instancia de InMemoryCache, que Apollo Client utiliza para almacenar en caché 
   // los resultados de las consultas después de obtenerlos.
+
+  link: authLink.concat(httpLink),// concateno los headers que contienen el token con la url del servidor backend
+
 });
 
 function App() {
@@ -44,14 +69,53 @@ function App() {
   //Este estado tiene el proposito para usarlo en las rutas privadas 
   // este estado puedo usarlo en toda la aplicacion 
 
-  const setToken = (token) => {// me permite guardaar el token en estado authToken y si existe token lo guarda 
+  const setToken = (token) => {//me permite guardar el token en los dos lugares necesarios para su uso 
+    // en contexto estado global authToken y en la localStorage al mismo tiempo cuando es llamada esta 
+    // funcion a su ejecucion 
+    //  me permite guardaar el token en estado authToken y si existe token lo guarda 
     // en  el localStorage como string con el metodo JSON.stringify()
     setAuthToken(token)
     if (token) {
       localStorage.setItem('token', JSON.stringify(token))// almacena el token en el local storage pero como string
       // dado que el viene como valor debo cambiarlo a string y eso lo hace el metodo JSON.stringify(token)
+    } else {// si no tenemos token o es null cuando cerraron sesion.. borramos el token del local storage
+      localStorage.removeItem('token')// me elimina el token del local storage 
     }
   }
+  // console.log("soy user Data : ", userData)
+
+
+  useEffect(() => {
+
+    // pendiente corregir situacion cuando se actualiza la pagina visitada se borra el estado del contexto 
+    // del token AuthContext
+
+    // const token = authToken
+    // console.log('token del usuario si soy yo : ', token)
+    // console.log("soy el usuario :",jwt_decode(token))
+    if (authToken) {// evidentemente primero preguntamos si existe un token guardado en el contexto del token AuthContext
+      // para poder asi si decodificar
+
+      const userDataOnLine = jwt_decode(authToken);
+      // const userDataOnLine = jwt_decode(token);
+      // guardaremos la informacion decodificada del token en el estado global del conxteto de usuario(UserContext)
+      // en el userData con el metodo de guardar o ser de el y es setUserData
+      // setUserData( userDataOnLine)
+
+      // // console.log("soy user Data inicial : ", userDataOnLine)
+      // console.log("soy user Data lero lero : ", userData)
+
+      setUserData({
+        _id: userDataOnLine._id,
+        nombre: userDataOnLine.nombre,
+        apellido: userDataOnLine.apellido,
+        identificacion: userDataOnLine.identificacion,
+        correo: userDataOnLine.correo,
+        rol: userDataOnLine.rol,
+      });
+      console.log("soy user Data: ", userData)
+    }
+  }, [authToken])
 
   return (
     <ApolloProvider client={client}>{/*contexto para implementar apolloClient en toda la aplicacion 
@@ -60,7 +124,7 @@ function App() {
     como prop un objeto de tipo ApolloClient
     
     ApolloProvider nos permite hacer Query y Mutaciones en cualquier parte de nuestra aplicacion */}
-      <AuthContext.Provider value={{ setToken }}>{/**contexto para guardar el token y tenerlo disponible en toda la aplicion 
+      <AuthContext.Provider value={{ authToken, setAuthToken, setToken }}>{/**contexto para guardar el token y tenerlo disponible en toda la aplicion 
        * le paso como prop como input la funcion que me guarda el token tanto en el estado como en la local Storage
        * de esta manera puedo usar esta funcion desde todas partes de mi aplicacion.. muy necesario para hacer 
        * la implementacion de las rutas privadas 

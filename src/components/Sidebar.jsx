@@ -1,5 +1,7 @@
+import { useAuth } from 'context/authContext';
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import PrivateComponent from './PrivateComponent';
 
 const SidebarLinks = () => {
   return (
@@ -8,11 +10,35 @@ const SidebarLinks = () => {
       to = ruta del pagina a navegar y es igual a la definida en los Routes 
       en el app.jsx*/}
       <SidebarRoute to='' title='Inicio' icon='fas fa-home' />
-      <SidebarRoute to='/usuarios' title='Usuarios' icon='fas fa-user' />
+      <PrivateComponent roleList={['ADMINISTRADOR']}>{/**me permite 
+       * ocultar los componente hijos dentro del PrivateComponent si el rol de usuario no es ADMINISTRADOR
+       */}
+        <SidebarRoute to='/usuarios' title='Usuarios' icon='fas fa-user' />
+      </PrivateComponent>
       <SidebarRoute to='/page2' title='Pagina2' icon='fas fa-smile-wink' />
       <SidebarRoute to='/category1' title='Catego 1' icon='fab fa-amazon' />
       <SidebarRoute to='/category1/page1' title='Test' icon='fas fa-car' />
+      <Logout />
     </ul>
+  );
+};
+
+// componente  boton de cerrar sesion 
+const Logout = () => {
+  const { setToken } = useAuth();
+  const deleteToken = () => {
+    console.log('eliminar token');
+    setToken(null);
+  };
+  return (
+    <li onClick={() => deleteToken()}>
+      <NavLink to='/auth/login' className='sidebar-route text-red-700'>
+        <div className='flex items-center'>
+          <i className='fas fa-sign-out-alt' />
+          <span className='text-sm  ml-2'>Cerrar Sesión</span>
+        </div>
+      </NavLink>
+    </li>
   );
 };
 

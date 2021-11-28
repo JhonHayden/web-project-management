@@ -59,4 +59,16 @@ const LOGIN = gql`
   }
 `;
 
-export {REGISTRO,LOGIN};
+const ACTUALIZAR_TOKEN = gql`
+    
+  mutation ActualizarToken {
+    actualizarToken {
+      token
+      error
+    }
+  }
+`;
+
+
+
+export { REGISTRO, LOGIN, ACTUALIZAR_TOKEN };
