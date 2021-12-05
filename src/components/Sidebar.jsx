@@ -10,7 +10,7 @@ const SidebarLinks = () => {
       to = ruta del pagina a navegar y es igual a la definida en los Routes 
       en el app.jsx*/}
       <SidebarRoute to='' title='Inicio' icon='fas fa-home' />
-      <PrivateComponent roleList={['ADMINISTRADOR']}>{/**me permite 
+      <PrivateComponent roleList={['ADMINISTRADOR','LIDER']}>{/**me permite 
        * ocultar los componente hijos dentro del PrivateComponent si el rol de usuario no es ADMINISTRADOR
        */}
         <SidebarRoute to='/usuarios' title='Usuarios' icon='fas fa-user' />

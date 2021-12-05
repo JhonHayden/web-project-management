@@ -42,7 +42,7 @@ const IndexUsuarios = () => {
 
   return (
     //Pagina principal de consulta coleccion usuarios (IndexUsuarios)
-    <PrivateRoute roleList={['ADMINISTRADOR']}>
+    <PrivateRoute roleList={['ADMINISTRADOR','LIDER']}>
       <div>
         <h1>
           Data Usuarios:
