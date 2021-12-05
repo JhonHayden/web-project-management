@@ -23,8 +23,11 @@ import jwt_decode from "jwt-decode";// me permite usar la libreria que me decodi
 
 // import PrivateRoute from 'components/PrivateRoute';
 
+
+
 const httpLink = createHttpLink({ // entra a la url del servidor de apollo sever .. es decir mi backend 
-  uri: 'http://localhost:4000/graphql',
+  // uri: 'http://localhost:4000/graphql', // url servidor backend o api local 
+  uri: 'https://servidor-backend-gql.herokuapp.com/graphql', //url servidor backend o api  desplegada 
 });
 
 const authLink = setContext((_, { headers }) => {// setContext es un contexto de apollo client para permitirme
