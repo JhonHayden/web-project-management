@@ -8,17 +8,17 @@ import { ApolloProvider, ApolloClient, createHttpLink, InMemoryCache } from '@ap
 import { setContext } from '@apollo/client/link/context';// funcionalidad de apollo client para enviar en los request 
 // en sus headers el token 
 import Index from 'pages/Index';
-import Page2 from 'pages/Page2';
 import IndexCategory1 from 'pages/category1/Index';
 import Category1 from 'pages/category1/CategoryPage1';
 import IndexUsuarios from 'pages/usuarios';
 import EditarUsuario from 'pages/usuarios/editar';
-import 'styles/globals.css';
-import 'styles/tabla.css';
 import AuthLayout from 'layouts/AuthLayout';
 import Register from 'pages/auth/Register';
 import Login from 'pages/auth/Login';
 import jwt_decode from "jwt-decode";// me permite usar la libreria que me decodifica el token 
+import IndexProyectos from 'pages/proyectos/Index';
+import 'styles/globals.css';
+import 'styles/tabla.css';
 
 
 // import PrivateRoute from 'components/PrivateRoute';
@@ -26,8 +26,8 @@ import jwt_decode from "jwt-decode";// me permite usar la libreria que me decodi
 
 
 const httpLink = createHttpLink({ // entra a la url del servidor de apollo sever .. es decir mi backend 
-  // uri: 'http://localhost:4000/graphql', // url servidor backend o api local 
-  uri: 'https://servidor-backend-gql.herokuapp.com/graphql', //url servidor backend o api  desplegada 
+  uri: 'http://localhost:4000/graphql', // url servidor backend o api local 
+  // uri: 'https://servidor-backend-gql.herokuapp.com/graphql', //url servidor backend o api  desplegada 
 });
 
 const authLink = setContext((_, { headers }) => {// setContext es un contexto de apollo client para permitirme
@@ -143,7 +143,7 @@ function App() {
               usuario por el id este tipo de url con los dos puntos al final y luego el _id es para
               mandar datos a traves de la url almacenados en la varible _id . es decir lo que se escriba despues 
               de los dos puntos se almacenara en la variable _id y asi usarlo */}
-                <Route path='page2' element={<Page2 />} />
+                <Route path='/proyectos' element={<IndexProyectos />} /> {/**ruta para la pagina (interfaz) de proyectos  */}
                 <Route path='category1' element={<IndexCategory1 />} />
                 <Route path='category1/page1' element={<Category1 />} />
               </Route>
