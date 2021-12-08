@@ -12,6 +12,7 @@ import ButtonLoading from 'components/ButtonLoading';
 import { EDITAR_PROYECTO } from 'graphql/proyectos/mutations';
 import useFormData from 'hooks/useFormData';
 import { useMutation, useQuery } from '@apollo/client';
+import { Link } from 'react-router-dom';// me permite navegar a otras paginas 
 
 
 
@@ -52,8 +53,19 @@ const IndexProyectos = () => {
     if (queryData.Proyectos) {
 
         return (
-            <div className='p-32'>
-                {queryData.Proyectos.map((proyecto) => {
+            <div className='p-4 flex flex-col'>
+                <div className='self-center'>
+                    <h1 className='text-2xl font-bold text-gray-900'>Lista de proyectos </h1>
+                </div>
+                <div className='self-end'>
+                    <button className='self-end bg-gray-500 text-gray-50 rounded-3xl p-2 shadow-2xl hover:bg-gray-600 mt-1 '>
+                        <Link to='/proyectos/nuevoProyecto'>
+                            crear nuevo proyecto
+                        </Link>
+                    </button>
+                </div>
+
+                {queryData.Proyectos.map((proyecto) => { // recorro la data para mostrarla
 
                     return (
 
@@ -75,6 +87,7 @@ const AccordionProyecto = ({ proyecto }) => {// recibe como prop o input cada pr
 
     return (
         <div className='p-10 '>
+
             <AccordionStyled>
 
                 <AccordionSummaryStyled className='bg-red-500  ' expandIcon={<i className='fas fa-chevron-down' />}>

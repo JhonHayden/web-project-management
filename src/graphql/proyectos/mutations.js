@@ -15,7 +15,6 @@ const CREAR_PROYECTO = gql`
     $presupuesto: Float!
     $fechaInicio: Date!
     $fechaFin: Date!
-    $lider: String!
     $objetivos: [crearObjetivo]
   ) {
     crearProyecto(
@@ -23,7 +22,6 @@ const CREAR_PROYECTO = gql`
       presupuesto: $presupuesto
       fechaInicio: $fechaInicio
       fechaFin: $fechaFin
-      lider: $lider
       objetivos: $objetivos
     ) {
       _id

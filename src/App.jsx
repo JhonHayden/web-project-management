@@ -19,6 +19,7 @@ import jwt_decode from "jwt-decode";// me permite usar la libreria que me decodi
 import IndexProyectos from 'pages/proyectos/Index';
 import 'styles/globals.css';
 import 'styles/tabla.css';
+import NuevoProyecto from 'pages/proyectos/NuevoProyecto';
 
 
 // import PrivateRoute from 'components/PrivateRoute';
@@ -144,6 +145,9 @@ function App() {
               mandar datos a traves de la url almacenados en la varible _id . es decir lo que se escriba despues 
               de los dos puntos se almacenara en la variable _id y asi usarlo */}
                 <Route path='/proyectos' element={<IndexProyectos />} /> {/**ruta para la pagina (interfaz) de proyectos  */}
+
+
+                <Route path='/proyectos/nuevoProyecto' element={<NuevoProyecto />} />{/** Ruta interfaz de crear nuevo proyecto*/}
                 <Route path='category1' element={<IndexCategory1 />} />
                 <Route path='category1/page1' element={<Category1 />} />
               </Route>

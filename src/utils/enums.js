@@ -24,4 +24,11 @@ const Enum_EstadoProyecto = {
   INACTIVO: 'Inactivo',
 };
 
-export { Enum_Rol, Enum_EstadoUsuario, Enum_EstadoProyecto };
+
+const Enum_TipoObjetivo = {
+  GENERAL: 'General',
+  ESPECIFICO: 'Especifico',
+}
+
+
+export { Enum_Rol, Enum_EstadoUsuario, Enum_EstadoProyecto, Enum_TipoObjetivo };
