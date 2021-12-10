@@ -17,14 +17,14 @@ const PROYECTOS = gql`
       }
       inscripciones {
         estado
-        # proyecto{
-        #   _id
-        #   nombre
-        # }
-        # estudiante {
-        #   _id
+        proyecto{   # esta generando conflicto de  null con otra pagina
+          _id
+          nombre
+        }
+        estudiante {
+          _id
           
-        # }
+        }
       }
     }
   }

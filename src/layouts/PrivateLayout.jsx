@@ -88,9 +88,12 @@ const PrivateLayout = () => {
           <Outlet />
         </div>
       </div>
-      <ToastContainer />{/*me permite mostrar mensajes de error o de exito, lo pongo en el privatelayout
+      <div>
+
+        <ToastContainer />{/*me permite mostrar mensajes de error o de exito, lo pongo en el privatelayout
       para que se muestre en toda la aplicacion independientemente en que pagina este dentro de este 
       privatelayout  es decir este es el componente del mensaje flotante */}
+      </div>
     </div>
   );
 };

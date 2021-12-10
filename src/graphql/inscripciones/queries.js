@@ -14,6 +14,12 @@ const GET_INSCRIPCIONES = gql`
       proyecto {
         _id
         nombre
+        fase
+        estado
+        objetivos {
+          descripcion
+          tipo
+        }
         lider {
           _id
           nombre

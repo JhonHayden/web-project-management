@@ -24,6 +24,12 @@ const SidebarLinks = () => {
        */}
         <SidebarRoute to='/inscripciones' title='Inscripciones' />
       </PrivateComponent>
+
+      <PrivateComponent roleList={['ESTUDIANTE']}>{/**me permite 
+       * ocultar los componente hijos dentro del PrivateComponent si el rol de usuario no es ADMINISTRADOR
+       */}
+        <SidebarRoute to='/proyectosinscritos' title='Mis proyectos' />
+      </PrivateComponent>
       <Logout />
     </ul>
   );
@@ -102,8 +108,8 @@ const SidebarRoute = ({ to, title, icon }) => {
         to={to}
         className={({ isActive }) =>
           isActive
-            ? 'sidebar-route text-white bg-indigo-700'
-            : 'sidebar-route text-gray-900 hover:text-white hover:bg-indigo-400'
+            ? 'sidebar-route text-white bg-blue-600'
+            : 'sidebar-route text-gray-900 hover:text-white hover:bg-blue-300'
         }
       >
         <div className='flex items-center'>

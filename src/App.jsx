@@ -21,6 +21,9 @@ import 'styles/globals.css';
 import 'styles/tabla.css';
 import NuevoProyecto from 'pages/proyectos/NuevoProyecto';
 import IndexInscripciones from 'pages/inscripciones/Index';
+import ProyectosInscritos from 'pages/estudiante/ProyectosInscritos';
+import AvancesAProyecto from 'pages/estudiante/AvancesAProyecto';
+import CrearAvance from 'pages/estudiante/CrearAvance';
 
 
 // import PrivateRoute from 'components/PrivateRoute';
@@ -150,9 +153,10 @@ function App() {
                 <Route path='/proyectos/nuevoProyecto' element={<NuevoProyecto />} />{/** Ruta interfaz de crear nuevo proyecto*/}
 
                 <Route path='/inscripciones' element={<IndexInscripciones />} />{/** Ruta interfaz de lista inscripciones*/}
-              
-                <Route path='category1' element={<IndexCategory1 />} />
-                <Route path='category1/page1' element={<Category1 />} />
+
+                <Route path='/proyectosinscritos' element={<ProyectosInscritos />} />
+                <Route path='/proyectosinscritos/avances/:idProyecto' element={<AvancesAProyecto />} />
+                <Route path='/proyectosinscritos/crearAvances/:idProyecto' element={<CrearAvance />} />
               </Route>
               <Route path='/auth' element={<AuthLayout />}>{/**Ruta de pagina de registro dentro de este authLayaout 
              * van las paginas que tendra este AuthLayout
