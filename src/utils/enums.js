@@ -31,4 +31,6 @@ const Enum_TipoObjetivo = {
 }
 
 
+
+
 export { Enum_Rol, Enum_EstadoUsuario, Enum_EstadoProyecto, Enum_TipoObjetivo };

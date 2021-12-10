@@ -9,17 +9,23 @@ const SidebarLinks = () => {
       {/*Botones de navegacion del sidebar
       to = ruta del pagina a navegar y es igual a la definida en los Routes 
       en el app.jsx*/}
-      <SidebarRoute to='' title='Inicio' icon='fas fa-home' />
-      <PrivateComponent roleList={['ADMINISTRADOR','LIDER']}>{/**me permite 
+      {/* <SidebarRoute to='' title='Inicio' icon='fas fa-home' /> */}
+      <SidebarRoute to='' title='Inicio' />
+      <PrivateComponent roleList={['ADMINISTRADOR', 'LIDER']}>{/**me permite 
        * ocultar los componente hijos dentro del PrivateComponent si el rol de usuario no es ADMINISTRADOR
        */}
-        <SidebarRoute to='/usuarios' title='Usuarios' icon='fas fa-user' />
+        {/* <SidebarRoute to='/usuarios' title='Usuarios' icon='fas fa-user' /> */}
+        <SidebarRoute to='/usuarios' title='Usuarios' />
       </PrivateComponent>
-      <SidebarRoute to='/proyectos' title='Proyectos' icon="fa-thin fa-bars-progress" />
-      <SidebarRoute to='/category1' title='Catego 1' icon='fab fa-amazon' />
-      <SidebarRoute to='/category1/page1' title='Test' icon='fas fa-car' />
+      <SidebarRoute to='/proyectos' title='Proyectos' />
+      {/* <SidebarRoute to='/inscripciones' title='Inscripciones' icon='fab fa-amazon' /> */}
+      <PrivateComponent roleList={['ADMINISTRADOR', 'LIDER']}>{/**me permite 
+       * ocultar los componente hijos dentro del PrivateComponent si el rol de usuario no es ADMINISTRADOR
+       */}
+        <SidebarRoute to='/inscripciones' title='Inscripciones' />
+      </PrivateComponent>
       <Logout />
-    </ul> 
+    </ul>
   );
 };
 

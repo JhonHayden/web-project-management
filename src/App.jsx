@@ -20,6 +20,7 @@ import IndexProyectos from 'pages/proyectos/Index';
 import 'styles/globals.css';
 import 'styles/tabla.css';
 import NuevoProyecto from 'pages/proyectos/NuevoProyecto';
+import IndexInscripciones from 'pages/inscripciones/Index';
 
 
 // import PrivateRoute from 'components/PrivateRoute';
@@ -146,8 +147,10 @@ function App() {
               de los dos puntos se almacenara en la variable _id y asi usarlo */}
                 <Route path='/proyectos' element={<IndexProyectos />} /> {/**ruta para la pagina (interfaz) de proyectos  */}
 
-
                 <Route path='/proyectos/nuevoProyecto' element={<NuevoProyecto />} />{/** Ruta interfaz de crear nuevo proyecto*/}
+
+                <Route path='/inscripciones' element={<IndexInscripciones />} />{/** Ruta interfaz de lista inscripciones*/}
+              
                 <Route path='category1' element={<IndexCategory1 />} />
                 <Route path='category1/page1' element={<Category1 />} />
               </Route>
