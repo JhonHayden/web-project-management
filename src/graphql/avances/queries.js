@@ -12,6 +12,10 @@ const GET_AVANCES = gql`
             proyecto {
                 nombre
             }
+            observaciones {
+                _id
+                descripcionObservacion
+             }
         }
     }
 `;

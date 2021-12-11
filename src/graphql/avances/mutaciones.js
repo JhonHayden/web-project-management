@@ -20,4 +20,14 @@ mutation EditarAvance($_id: String!, $fecha: Date, $descripcion: String) {
 }
 `;
 
-export { CREAR_AVANCE, EDITAR_AVANCE };
+const CREAR_OBSERVACION = gql`
+
+
+mutation CrearObservacion($idAvance: String!, $descripcionObservacion: String!) {
+  crearObservacion(idAvance: $idAvance, descripcionObservacion: $descripcionObservacion) {
+  _id  
+  }
+}
+`;
+
+export { CREAR_AVANCE, EDITAR_AVANCE, CREAR_OBSERVACION };

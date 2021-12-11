@@ -23,7 +23,6 @@ import NuevoProyecto from 'pages/proyectos/NuevoProyecto';
 import IndexInscripciones from 'pages/inscripciones/Index';
 import ProyectosInscritos from 'pages/estudiante/ProyectosInscritos';
 import AvancesAProyecto from 'pages/estudiante/AvancesAProyecto';
-import CrearAvance from 'pages/estudiante/CrearAvance';
 
 
 // import PrivateRoute from 'components/PrivateRoute';
@@ -156,7 +155,6 @@ function App() {
 
                 <Route path='/proyectosinscritos' element={<ProyectosInscritos />} />
                 <Route path='/proyectosinscritos/avances/:idProyecto' element={<AvancesAProyecto />} />
-                <Route path='/proyectosinscritos/crearAvances/:idProyecto' element={<CrearAvance />} />
               </Route>
               <Route path='/auth' element={<AuthLayout />}>{/**Ruta de pagina de registro dentro de este authLayaout 
              * van las paginas que tendra este AuthLayout

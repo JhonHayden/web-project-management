@@ -32,35 +32,55 @@ const IndexProyectos = () => {
 
     if (loading) return <div>Cargando...</div>;//
 
-    if (queryData.Proyectos) {
+
+
+    if (queryData) {
+
+
+        if (queryData.Proyectos) {
+
+            return (
+                <div className='p-4 flex flex-col'>
+                    <div className='self-center'>
+                        <h1 className='text-2xl font-bold text-gray-900'>Lista de proyectos </h1>
+                    </div>
+                    <PrivateComponent roleList={['LIDER']}>
+
+                        <div className='self-end'>
+                            <button className='self-end bg-gray-500 text-gray-50 rounded-3xl p-2 shadow-2xl hover:bg-gray-600 mt-1 '>
+                                <Link to='/proyectos/nuevoProyecto'>
+                                    crear nuevo proyecto
+                                </Link>
+                            </button>
+                        </div>
+                    </PrivateComponent>
+
+                    {queryData.Proyectos.map((proyecto) => { // recorro la data para mostrarla
+
+                        return (
+
+                            <AccordionProyecto key={nanoid()} proyecto={proyecto} />
+                        )
+                    })}
+
+                </div>
+            )
+        } else {
+
+            return (
+
+                <div>No  hay proyectos </div>
+            )
+        }
+
+    } else {
 
         return (
-            <div className='p-4 flex flex-col'>
-                <div className='self-center'>
-                    <h1 className='text-2xl font-bold text-gray-900'>Lista de proyectos </h1>
-                </div>
-                <PrivateComponent roleList={['LIDER']}>
 
-                    <div className='self-end'>
-                        <button className='self-end bg-gray-500 text-gray-50 rounded-3xl p-2 shadow-2xl hover:bg-gray-600 mt-1 '>
-                            <Link to='/proyectos/nuevoProyecto'>
-                                crear nuevo proyecto
-                            </Link>
-                        </button>
-                    </div>
-                </PrivateComponent>
-
-                {queryData.Proyectos.map((proyecto) => { // recorro la data para mostrarla
-
-                    return (
-
-                        <AccordionProyecto key={nanoid()} proyecto={proyecto} />
-                    )
-                })}
-
-            </div>
+            <div>No  hay proyectos en la base de datos  </div>
         )
     }
+
 }
 
 
@@ -92,10 +112,12 @@ const AccordionProyecto = ({ proyecto }) => {// recibe como prop o input cada pr
                                         </select>
                                     </div>
                                 )} */}
-
                         </div>
-
-
+                        <div>
+                            <Link to={`/proyectosinscritos/avances/${proyecto._id}`}>
+                                <span className='uppercase font-bold text-gray-100  '>Avances</span>
+                            </Link>
+                        </div>
                     </div>
                 </AccordionSummaryStyled>
                 <AccordionDetailsStyled>
