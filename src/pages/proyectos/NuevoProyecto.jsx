@@ -10,6 +10,8 @@ import { Enum_TipoObjetivo } from 'utils/enums';
 import { nanoid } from 'nanoid';
 import { ObjContext } from 'context/objContext';
 import { useObj } from 'context/objContext';// hook para usar el contexto 
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -18,19 +20,45 @@ import { useObj } from 'context/objContext';// hook para usar el contexto
 
 const NuevoProyecto = () => {
 
+    const navigate = useNavigate();
     const { form, formData, updateFormData } = useFormData(); // hook para capturar la informacion de 
     // los inputs  lo almacenaremos en estos estados cuando ocurra el evento submit 
 
-
+    const [validacionObjetivosExistente, setValidacionObjetivosExistente] = useState(true)
 
     const [crearProyecto, { data: mutationData, loading: mutationLoading, error: mutationError }] =
         useMutation(CREAR_PROYECTO);
 
-        
+
     useEffect(() => {// escucha la respuesta del backend a la mutacion y me imprime en consola esta respuesta 
         console.log('data mutation', mutationData);
     });
 
+
+    useEffect(() => {
+
+        if (formData.objetivos) {
+            setValidacionObjetivosExistente(false)
+        } else {
+            setValidacionObjetivosExistente(true)
+        }
+
+    }, [formData.objetivos])
+
+
+    useEffect(() => {
+        if (mutationData) {
+            toast.success('Proyecto creado con exito');
+            // refetch(); // pendiente para agregar y que me muestre los avances 
+            navigate("/proyectos")
+        }
+    }, [mutationData])
+
+    useEffect(() => {
+        if (mutationError) {
+            toast.error('Error creando la observación');
+        }
+    }, [mutationError]);
 
     const submitForm = (e) => {
         e.preventDefault();
@@ -78,9 +106,20 @@ const NuevoProyecto = () => {
         //ejecutamos la mutacion para crear proyecto 
         crearProyecto({ // le pasamos las variables 
 
-            variables: formData,
+            variables: {
 
-
+                nombre: formData.nombre,
+                fechaInicio: formData.fechaInicio,
+                fechaFin: formData.fechaFin,
+                presupuesto: formData.presupuesto,
+                objetivos: formData.objetivos
+            }
+            // "objetivos": [
+            //   {
+            //     "descripcion": null,
+            //     "tipo": null
+            //   }
+            // ]
         })
 
     }
@@ -105,7 +144,7 @@ const NuevoProyecto = () => {
                 <Input name='fechaInicio' label='Fecha de Inicio' required={true} type='date' />
                 <Input name='fechaFin' label='Fecha de Fin' required={true} type='date' />
                 <Objetivos />
-                <ButtonLoading text='Crear Proyecto' loading={false} disabled={false} /> {/**Boton para el submit del formulario 
+                <ButtonLoading text='Crear Proyecto' loading={false} disabled={validacionObjetivosExistente} /> {/**Boton para el submit del formulario 
          * de tipo submit esto hace que cuando se oprima se ejecute el evento onSubmit del formulario y este a
          * su vez ejecuta el la funcion submitForm que captura los datos del formulario 
         */}

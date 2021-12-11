@@ -8,6 +8,25 @@ const EDITAR_PROYECTO = gql`
     }
   }
 `;
+const EDITAR_PROYECTO_ROL_LIDER = gql`
+  mutation EditarProyecto($_id: String!, $nombre: String, $presupuesto: Float) {
+  editarProyecto(_id: $_id, nombre: $nombre, presupuesto: $presupuesto) {
+    _id
+  }
+}
+`;
+
+const EDITAR_OBJETIVO = gql`
+
+mutation EditarObjetivo($idProyecto: String!, $indexObjetivo: Int!, $campos: camposObjetivos!) {
+  editarObjetivo(idProyecto: $idProyecto, indexObjetivo: $indexObjetivo, campos: $campos) {
+  _id  
+  }
+}
+`;
+
+
+
 
 const CREAR_PROYECTO = gql`
   mutation CrearProyecto(
@@ -29,7 +48,7 @@ const CREAR_PROYECTO = gql`
   }
 `;
 
-export { EDITAR_PROYECTO, CREAR_PROYECTO };
+export { EDITAR_PROYECTO, CREAR_PROYECTO, EDITAR_PROYECTO_ROL_LIDER, EDITAR_OBJETIVO };
 
 
 // mutation EditarProyecto($id: String!, $fase: Enum_FaseProyecto) {
@@ -38,6 +57,6 @@ export { EDITAR_PROYECTO, CREAR_PROYECTO };
 //     fase
 //     fechaFin
 //     fechaInicio
-    
+
 //   }
 // }

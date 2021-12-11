@@ -5,7 +5,7 @@ import { Dialog } from '@mui/material';
 import { Enum_EstadoProyecto } from 'utils/enums';
 import DropDown from 'components/Dropdown';
 import ButtonLoading from 'components/ButtonLoading';
-import { EDITAR_PROYECTO } from 'graphql/proyectos/mutations';
+import { EDITAR_PROYECTO, EDITAR_OBJETIVO, EDITAR_PROYECTO_ROL_LIDER } from 'graphql/proyectos/mutations';
 import useFormData from 'hooks/useFormData';
 import { useMutation, useQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';// me permite navegar a otras paginas 
@@ -14,6 +14,7 @@ import { CREAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 import { useUser } from 'context/userContext';
 import { toast } from 'react-toastify';
 import { nanoid } from 'nanoid';
+import Input from 'components/Input';// componente input
 import {
     AccordionStyled,
     AccordionSummaryStyled,
@@ -23,7 +24,7 @@ import {
 
 const IndexProyectos = () => {
 
-    const { data: queryData, loading, error } = useQuery(PROYECTOS);// ejecuta el query de proyectos 
+    const { data: queryData, loading, error, refetch } = useQuery(PROYECTOS);// ejecuta el query de proyectos 
 
 
     useEffect(() => {
@@ -59,7 +60,10 @@ const IndexProyectos = () => {
 
                         return (
 
-                            <AccordionProyecto key={nanoid()} proyecto={proyecto} />
+                            <AccordionProyecto
+                                key={nanoid()}
+                                proyecto={proyecto}
+                                refetch={refetch} />
                         )
                     })}
 
@@ -84,11 +88,14 @@ const IndexProyectos = () => {
 }
 
 
-const AccordionProyecto = ({ proyecto }) => {// recibe como prop o input cada proyecto 
+const AccordionProyecto = ({ proyecto, refetch }) => {// recibe como prop o input cada proyecto 
 
-    const [showDialog, setShowDialog] = useState(false);// estado para permitir mostrar un dialog
+    const [mostrarFormEditarEstadoProjectRolAdmin, setMostrarFormEditarEstadoProjectRolAdmin] = useState(false);// estado para permitir mostrar un dialog
+    const [mostrarFormEditarProjectRolLider, setMostrarFormEditarProjectRolLider] = useState(false);// estado para permitir mostrar un dialog
 
     // const [editMode, setEditMode] = useState(false)
+
+
 
     return (
         <div className='p-10 '>
@@ -126,10 +133,24 @@ const AccordionProyecto = ({ proyecto }) => {// recibe como prop o input cada pr
                      */}
                         <i className='fas fa-pen mx-4 text-blue-700 hover:text-blue-500'
                             onClick={() => {
-                                setShowDialog(true);// cuando le damos click al lapiz me ejecuta el setEditMode y puedo editar el estado de un 
+                                setMostrarFormEditarEstadoProjectRolAdmin(true);// cuando le damos click al lapiz me ejecuta el setEditMode y puedo editar el estado de un 
                                 // proyecto 
                             }}
                         />
+                    </PrivateComponent>
+                    <PrivateComponent roleList={['LIDER']}> {/**solo el administrador puede cambiar el estado de un proyecto 
+                     * de inactivo a activo siempre y cuando la fase no este en terminado 
+                     */}
+
+                        <ButtonLoading
+                            disabled={proyecto.estado === 'ACTIVO' ? false : true}
+                            loading={false}
+                            text='Editar Proyecto'
+                            onClick={() => {
+                                setMostrarFormEditarProjectRolLider(true);// cuando le damos click al lapiz me ejecuta el setEditMode y puedo editar el estado de un 
+                            }}
+                        />
+
                     </PrivateComponent>
                     <PrivateComponent roleList={['ESTUDIANTE']}>
                         <InscripcionProyecto //componente que me ejecuta la mutacion de crear inscripcion a un proyecto 
@@ -144,10 +165,21 @@ const AccordionProyecto = ({ proyecto }) => {// recibe como prop o input cada pr
                         Liderado por: {proyecto.lider.correo}
                     </div>
                     <div>
-                        {proyecto.objetivos.map((objetivo) => {
+                        {proyecto.objetivos.map((objetivo, index) => {
+
+                            const indexObjetivo = index;
+                            // console.log(indexObjetivo)
+
                             return (
 
-                                <Objetivo key={nanoid()} tipo={objetivo.tipo} descripcion={objetivo.descripcion} />
+                                <Objetivo
+                                    key={objetivo._id}
+                                    tipo={objetivo.tipo}
+                                    descripcion={objetivo.descripcion}
+                                    idProyecto={proyecto._id}
+                                    estadoProyecto={proyecto.estado}
+                                    refetch={refetch}
+                                    indexObjetivo={indexObjetivo} />
                             )
                         })}
                     </div>
@@ -157,18 +189,34 @@ const AccordionProyecto = ({ proyecto }) => {// recibe como prop o input cada pr
             </AccordionStyled>
 
             <Dialog
-                open={showDialog}
+                open={mostrarFormEditarEstadoProjectRolAdmin}
                 onClose={() => {
-                    setShowDialog(false);
+                    setMostrarFormEditarEstadoProjectRolAdmin(false);
                 }}>
-                <FormEditProyecto _id={proyecto._id} />
+                <FormEditProyectoRolAdmin _id={proyecto._id} />
             </Dialog>
+            <Dialog
+                open={mostrarFormEditarProjectRolLider}
+                onClose={() => {
+                    setMostrarFormEditarProjectRolLider(false);
+                }}>
+                <FormEditProyectoRolLider
+                    _id={proyecto._id}
+                    nombreProyecto={proyecto.nombre}
+                    presupuesto={proyecto.presupuesto}
+                    refetch={refetch}
+                    setMostrarFormEditarProjectRolLider={setMostrarFormEditarProjectRolLider}
+                />
+            </Dialog>
+
+
+
         </div>
     )
 }
 
 
-const FormEditProyecto = ({ _id }) => {
+const FormEditProyectoRolAdmin = ({ _id }) => {
 
     const { form, formData, updateFormData } = useFormData();
     const [editarProyecto, { data: dataMutation, loading, error }] = useMutation(EDITAR_PROYECTO);
@@ -214,7 +262,103 @@ const FormEditProyecto = ({ _id }) => {
     )
 }
 
-const Objetivo = ({ tipo, descripcion }) => {
+
+
+
+const FormEditProyectoRolLider = ({
+    _id,
+    nombreProyecto,
+    presupuesto,
+    refetch,
+    setMostrarFormEditarProjectRolLider }) => {
+
+    const { form, formData, updateFormData } = useFormData();
+    const [editarProyecto, { data: dataMutation, loading, error }] = useMutation(EDITAR_PROYECTO_ROL_LIDER);
+
+    useEffect(() => {
+        if (dataMutation) {
+            toast.success('Proyecto editado con exito');
+            refetch(); // pendiente para agregar y que me muestre los avances 
+            setMostrarFormEditarProjectRolLider(false)
+        }
+    }, [dataMutation])
+
+    useEffect(() => {
+        if (error) {
+            toast.error('Error editando proyecto');
+        }
+    }, [error]);
+
+
+    const submitForm = (e) => {
+        e.preventDefault();
+
+        formData.presupuesto = parseFloat(formData.presupuesto);
+
+        editarProyecto({
+            variables: {
+                _id,
+                nombre: formData.nombre,
+                presupuesto: formData.presupuesto,
+            },
+        });
+    };
+
+    useEffect(() => {
+        console.log('data mutation', dataMutation);
+    }, [dataMutation]);
+
+    return (
+
+        <div className='p-4 ' >
+            <h1 className='font-bold'>Editar proyecto </h1>
+
+            <form
+                ref={form}
+                onChange={updateFormData}
+                onSubmit={submitForm}
+                action=""
+                className='flex flex-col items-center'>
+                <Input
+                    name='nombre'
+                    label='Nombre del Proyecto'
+                    required={true}
+                    type='text'
+                    defaultValue={nombreProyecto} />
+                <Input
+                    name='presupuesto'
+                    label='Presupuesto del Proyecto'
+                    required={true}
+                    type='number'
+                    defaultValue={presupuesto} />
+
+
+
+                <ButtonLoading disabled={false} loading={loading} text='Confirmar' />
+
+            </form>
+
+        </div>
+
+    )
+}
+
+
+
+
+
+const Objetivo = ({
+    idProyecto,
+    indexObjetivo,
+    tipo,
+    descripcion,
+    estadoProyecto,
+    refetch }) => {
+
+    const [mostrarFormEditObjetivo, setMostrarFormEditObjetivo] = useState(false)
+
+
+
     return (
         <div className=' mx-5  my-4 bg-gray-100 p-8 rounded-lg shadow-2xl '>
             <div className='text-black font-bold'>
@@ -223,9 +367,115 @@ const Objetivo = ({ tipo, descripcion }) => {
             <div>
                 {descripcion}
             </div>
+            <div>
+                <ButtonLoading
+                    disabled={estadoProyecto === 'ACTIVO' ? false : true}
+                    loading={false}
+                    text='Editar Objetivo'
+                    onClick={() => {
+                        setMostrarFormEditObjetivo(true);// cuando le damos click al lapiz me ejecuta el setEditMode y puedo editar el estado de un 
+                    }}
+                />
+            </div>
+
+            <Dialog
+                open={mostrarFormEditObjetivo}
+                onClose={() => {
+                    setMostrarFormEditObjetivo(false);
+                }}>
+                <FormEditObjetivosRolLider
+                    idProyecto={idProyecto}
+                    descripcion={descripcion}
+                    refetch={refetch}
+                    setMostrarFormEditObjetivo={setMostrarFormEditObjetivo}
+                    indexObjetivo={indexObjetivo}
+                />
+            </Dialog>
+
         </div>
     )
 }
+
+
+const FormEditObjetivosRolLider = ({ idProyecto, descripcion, refetch, setMostrarFormEditObjetivo, indexObjetivo }) => {
+
+    const { form, formData, updateFormData } = useFormData();
+    const [editarProyecto, { data: dataMutation, loading, error }] = useMutation(EDITAR_OBJETIVO);
+
+    useEffect(() => {
+        if (dataMutation) {
+            toast.success('Objetivo editado con exito');
+            refetch(); // pendiente para agregar y que me muestre los avances 
+            setMostrarFormEditObjetivo(false)
+        }
+    }, [dataMutation])
+
+    useEffect(() => {
+        if (error) {
+            toast.error('Error editando Objetivo');
+        }
+    }, [error]);
+
+
+    const submitForm = (e) => {
+        e.preventDefault();
+
+
+        editarProyecto({
+            variables: {
+                idProyecto,
+                indexObjetivo,
+                campos: formData
+
+            },
+        });
+    };
+
+    useEffect(() => {
+        console.log('data mutation', dataMutation);
+    }, [dataMutation]);
+
+
+
+    return (
+
+
+
+        <div>
+            <div className='p-4 ' >
+                <h1 className='font-bold'>Editar Objetivo</h1>
+
+                <form
+                    ref={form}
+                    onChange={updateFormData}
+                    onSubmit={submitForm}
+                    action=""
+                    className='flex flex-col items-center'>
+                    <label htmlFor='descripcion' className='flex flex-col my-3'>
+                        <span>Descripción Objetivo:</span>
+                        <textarea
+                            className='border'
+                            name="descripcion"
+                            id=""
+                            cols="50"
+                            rows="10"
+                            required
+                            defaultValue={descripcion}>
+
+                        </textarea>
+                    </label>
+
+
+                    <ButtonLoading disabled={false} loading={loading} text='Confirmar' />
+
+                </form>
+
+            </div>
+        </div>
+    )
+}
+
+
 
 const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
     const [estadoInscripcion, setEstadoInscripcion] = useState('');// guardare el estado de la inscripcion existente retornada por el filter

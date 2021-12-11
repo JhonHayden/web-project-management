@@ -7,7 +7,9 @@ const PROYECTOS = gql`
       nombre
       estado
       fase
+      presupuesto
       objetivos {
+        _id
         descripcion
         tipo
       }
