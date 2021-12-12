@@ -43,7 +43,7 @@ const IndexProyectos = () => {
             return (
                 <div className='p-4 flex flex-col'>
                     <div className='self-center'>
-                        <h1 className='text-2xl font-bold text-gray-900'>Lista de proyectos </h1>
+                        <h1 className='text-2xl font-extrabold text-gray-900'>Lista de proyectos </h1>
                     </div>
                     <PrivateComponent roleList={['LIDER']}>
 
@@ -59,11 +59,14 @@ const IndexProyectos = () => {
                     {queryData.Proyectos.map((proyecto) => { // recorro la data para mostrarla
 
                         return (
+                            <div
+                                key={proyecto._id}
+                                className=' items-center  gap-2 rounded-md'>
+                                <AccordionProyecto
 
-                            <AccordionProyecto
-                                key={nanoid()}
-                                proyecto={proyecto}
-                                refetch={refetch} />
+                                    proyecto={proyecto}
+                                    refetch={refetch} />
+                            </div>
                         )
                     })}
 
@@ -92,6 +95,7 @@ const AccordionProyecto = ({ proyecto, refetch }) => {// recibe como prop o inpu
 
     const [mostrarFormEditarEstadoProjectRolAdmin, setMostrarFormEditarEstadoProjectRolAdmin] = useState(false);// estado para permitir mostrar un dialog
     const [mostrarFormEditarProjectRolLider, setMostrarFormEditarProjectRolLider] = useState(false);// estado para permitir mostrar un dialog
+    const [mostrarEdiccionFaseATerminado, setMostrarEdiccionFaseATerminado] = useState(false);// estado para permitir mostrar un dialog
 
     // const [editMode, setEditMode] = useState(false)
 
@@ -102,10 +106,81 @@ const AccordionProyecto = ({ proyecto, refetch }) => {// recibe como prop o inpu
 
             <AccordionStyled>
 
-                <AccordionSummaryStyled className='bg-red-500  ' expandIcon={<i className='fas fa-chevron-down' />}>
+                <AccordionSummaryStyled expandIcon={<i className='fas fa-chevron-down' />}>
                     <div className='flex  w-full justify-between'>{/** uppercase me pone todo en mayusculas*/}
-                        <div className='uppercase font-bold text-gray-100  '>
-                            {proyecto.nombre} - {proyecto.estado} - fase: {proyecto.fase}
+                        <div className=' flex flex-col uppercase font-bold text-gray-100  '>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Nombre proyecto:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    {proyecto.nombre}
+
+                                </div>
+                            </div>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Fecha inicio:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    {proyecto.fechaInicio}
+
+                                </div>
+                            </div>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Fecha fin:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    {proyecto.fechaFin}
+
+
+                                </div>
+                            </div>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Presupuesto:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    {proyecto.presupuesto}
+
+
+                                </div>
+                            </div>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Estado:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    {proyecto.estado}
+
+
+                                </div>
+                            </div>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Fase:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    {proyecto.fase}
+                                </div>
+                            </div>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Lider:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    <span className='mr-1'>
+                                        {proyecto.lider.nombre}
+                                    </span>
+                                    <span>
+                                        {proyecto.lider.apellido}
+                                    </span>
+
+
+                                </div>
+                            </div>
+
                             {/* {!editMode ?
                                 (
                                     <span>{proyecto.estado}</span>
@@ -131,12 +206,31 @@ const AccordionProyecto = ({ proyecto, refetch }) => {// recibe como prop o inpu
                     <PrivateComponent roleList={['ADMINISTRADOR']}> {/**solo el administrador puede cambiar el estado de un proyecto 
                      * de inactivo a activo siempre y cuando la fase no este en terminado 
                      */}
-                        <i className='fas fa-pen mx-4 text-blue-700 hover:text-blue-500'
-                            onClick={() => {
-                                setMostrarFormEditarEstadoProjectRolAdmin(true);// cuando le damos click al lapiz me ejecuta el setEditMode y puedo editar el estado de un 
-                                // proyecto 
-                            }}
-                        />
+                        <div className='flex justify-between'>
+                            <ButtonLoading
+                                loading={false}
+                                text='Editar estado'
+                                onClick={() => {
+                                    setMostrarFormEditarEstadoProjectRolAdmin(true);
+                                }}
+                            />
+
+                            {proyecto.fase === 'EN_DESARROLLO' ? (
+
+                                <ButtonLoading
+                                    loading={false}
+                                    text='Editar fase'
+                                    onClick={() => {
+                                        setMostrarEdiccionFaseATerminado(true);
+                                    }}
+                                />
+
+                            ) : (
+                                <></>
+                            )}
+
+                        </div>
+
                     </PrivateComponent>
                     <PrivateComponent roleList={['LIDER']}> {/**solo el administrador puede cambiar el estado de un proyecto 
                      * de inactivo a activo siempre y cuando la fase no este en terminado 
@@ -161,8 +255,15 @@ const AccordionProyecto = ({ proyecto, refetch }) => {// recibe como prop o inpu
                         // y deshabilitar el boton y mostrar mensaje de que ya se esta inscrito en el proyecto 
                         />
                     </PrivateComponent>
-                    <div>
-                        Liderado por: {proyecto.lider.correo}
+                    <div className='font-semibold'>
+                        <span className='mx-1'>
+
+                            Correo del lider:
+                        </span>
+                        <span>
+
+                            {proyecto.lider.correo}
+                        </span>
                     </div>
                     <div>
                         {proyecto.objetivos.map((objetivo, index) => {
@@ -206,6 +307,19 @@ const AccordionProyecto = ({ proyecto, refetch }) => {// recibe como prop o inpu
                     presupuesto={proyecto.presupuesto}
                     refetch={refetch}
                     setMostrarFormEditarProjectRolLider={setMostrarFormEditarProjectRolLider}
+                />
+            </Dialog>
+            <Dialog
+                open={mostrarEdiccionFaseATerminado}
+                onClose={() => {
+                    setMostrarEdiccionFaseATerminado(false);
+                }}>
+                <FormEditFaseProyectoATerminado
+                    _id={proyecto._id}
+                    nombreProyecto={proyecto.nombre}
+                    presupuesto={proyecto.presupuesto}
+                    refetch={refetch}
+                    setMostrarEdiccionFaseATerminado={setMostrarEdiccionFaseATerminado}
                 />
             </Dialog>
 
@@ -263,6 +377,83 @@ const FormEditProyectoRolAdmin = ({ _id }) => {
 }
 
 
+
+const FormEditFaseProyectoATerminado = ({ _id, setMostrarEdiccionFaseATerminado, refetch }) => {
+
+    const [editarProyecto, { data: dataMutation, loading, error }] = useMutation(EDITAR_PROYECTO);
+    const [confirmacionTerminarProyecto, setConfirmacionTerminarProyecto] = useState(false)
+
+
+
+    // useEffect(() => {
+    //     if(confirmacionTerminarProyecto){
+
+    //         setMostrarEdiccionFaseATerminado(false)
+    //     }
+    // }, [confirmacionTerminarProyecto])
+
+    const terminarProyecto = () => {
+
+
+        // setConfirmacionTerminarProyecto(true)
+        editarProyecto({
+            variables: {
+                _id,
+                fase: 'TERMINADO',
+            },
+        });
+    };
+
+    useEffect(() => {
+
+        if (dataMutation) {
+
+            refetch()
+        }
+        // console.log('data mutation', dataMutation);
+    }, [dataMutation]);
+
+    return (
+
+        <div className='p-4 flex flex-col justify-items-center' >
+            <h1 className='font-bold m-2'>Actualizar proyecto a terminado </h1>
+
+
+            <div>{
+                !confirmacionTerminarProyecto ? (
+                    <button
+                        className='bg-blue-600 text-white font-bold text-lg py-3 px-6 ml-6 rounded-xl hover:bg-blue-800 shadow-md '
+                        onClick={() => {
+                            setConfirmacionTerminarProyecto(true)
+                        }}>Terminar Proyecto</button>
+
+                ) : (
+                    <></>
+                )
+            }
+            </div>
+            {confirmacionTerminarProyecto ?
+                (
+                    <ButtonLoading
+                        disabled={false}
+                        loading={loading}
+                        text='Confirmar'
+                        onClick={() => {
+                            terminarProyecto()
+                        }} />
+                ) :
+                (
+                    <></>
+                )
+
+            }
+
+
+
+        </div>
+
+    )
+}
 
 
 const FormEditProyectoRolLider = ({
@@ -362,20 +553,34 @@ const Objetivo = ({
     return (
         <div className=' mx-5  my-4 bg-gray-100 p-8 rounded-lg shadow-2xl '>
             <div className='text-black font-bold'>
-                {tipo}
+                <span className='mx-1'>
+
+                    Tipo de objetivo:
+                </span>
+                <span>
+
+                    {tipo}
+                </span>
             </div>
             <div>
-                {descripcion}
+                <span className='mx-1'>
+                    Descripción:
+                </span>
+                <span>
+                    {descripcion}
+                </span>
             </div>
             <div>
-                <ButtonLoading
-                    disabled={estadoProyecto === 'ACTIVO' ? false : true}
-                    loading={false}
-                    text='Editar Objetivo'
-                    onClick={() => {
-                        setMostrarFormEditObjetivo(true);// cuando le damos click al lapiz me ejecuta el setEditMode y puedo editar el estado de un 
-                    }}
-                />
+                <PrivateComponent roleList={['LIDER']}>
+                    <ButtonLoading
+                        disabled={estadoProyecto === 'ACTIVO' ? false : true}
+                        loading={false}
+                        text='Editar Objetivo'
+                        onClick={() => {
+                            setMostrarFormEditObjetivo(true);// cuando le damos click al lapiz me ejecuta el setEditMode y puedo editar el estado de un 
+                        }}
+                    />
+                </PrivateComponent>
             </div>
 
             <Dialog
