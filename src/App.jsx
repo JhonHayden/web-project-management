@@ -8,8 +8,6 @@ import { ApolloProvider, ApolloClient, createHttpLink, InMemoryCache } from '@ap
 import { setContext } from '@apollo/client/link/context';// funcionalidad de apollo client para enviar en los request 
 // en sus headers el token 
 import Index from 'pages/Index';
-import IndexCategory1 from 'pages/category1/Index';
-import Category1 from 'pages/category1/CategoryPage1';
 import IndexUsuarios from 'pages/usuarios';
 import EditarUsuario from 'pages/usuarios/editar';
 import AuthLayout from 'layouts/AuthLayout';
@@ -23,6 +21,8 @@ import NuevoProyecto from 'pages/proyectos/NuevoProyecto';
 import IndexInscripciones from 'pages/inscripciones/Index';
 import ProyectosInscritos from 'pages/estudiante/ProyectosInscritos';
 import AvancesAProyecto from 'pages/estudiante/AvancesAProyecto';
+import IndexPerfil from 'pages/perfil/Index';
+import FormEditarPerfil from 'pages/perfil/FormEditarPerfil';
 
 
 // import PrivateRoute from 'components/PrivateRoute';
@@ -142,6 +142,8 @@ function App() {
               <Route path='/' element={<PrivateLayout />}>{/*me muestra el componente de diseño layout de las paginas 
              contenidas en este privateLayout */}
                 <Route path='' element={<Index />} />
+                <Route path='/perfil' element={<IndexPerfil />} />{/*Ruta pagina tabla usuarios*/}
+                <Route path='/perfil/editar' element={<FormEditarPerfil />} />{/*Ruta pagina tabla usuarios*/}
                 <Route path='/usuarios' element={<IndexUsuarios />} />{/*Ruta pagina tabla usuarios*/}
                 <Route path='/usuarios/editar/:_id' element={<EditarUsuario />} />{/*Ruta pagina ediccion de un 
               usuario por el id este tipo de url con los dos puntos al final y luego el _id es para

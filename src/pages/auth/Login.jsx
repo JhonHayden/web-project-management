@@ -7,6 +7,8 @@ import { useMutation } from '@apollo/client';
 import { LOGIN } from 'graphql/auth/mutations';
 import { useAuth } from 'context/authContext';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 const Login = () => {
     const navigate = useNavigate();// me permite navegar a otra pagina de la aplicacion
@@ -42,26 +44,37 @@ const Login = () => {
                 setToken(dataMutation.login.token);// llamado de la funcion de guardar el token tanto en el estado como en el local 
                 // storage pero como string gracias al JSON.stringify() que tiene dentro esta funcion de setToken
                 navigate('/');// me redirije al home cuando ya inicie sesion el en login 
+            } else if (dataMutation.login.error === 'Contraseña incorrecta') {
+
+                toast.error('Contraseña incorrecta')
+
+            } else {
+                toast.error('No estas autorizado todavía')
+
             }
         }
     }, [dataMutation, setToken, navigate]);
 
     return (
-        <div className='flex flex-col items-center justify-center w-full h-full p-10'>
-            <h1 className='text-xl font-bold text-gray-900'>Iniciar sesión</h1>
-            <form className='flex flex-col' onSubmit={submitForm} onChange={updateFormData} ref={form}>
-                <Input name='correo' type='email' label='Correo' required={true} />
-                <Input name='password' type='password' label='Contraseña' required={true} />
-                <ButtonLoading
-                    disabled={Object.keys(formData).length === 0}
-                    loading={mutationLoading} /**le paso el mutationLoading para que muestre la animacion de carga */
-                    text='Iniciar Sesión'
-                />
-            </form>
-            <span>¿No tienes una cuenta?</span>{/**me permite dirigirme a la pagina de registro  */}
-            <Link to='/auth/register'>
-                <span className='text-blue-700'>Regístrate</span>
-            </Link>
+        // <div className='flex flex-col items-center justify-center w-full h-full p-10'>
+        <div className='flex justify-center'>
+
+            <div className='flex flex-col items-center justify-center border border-gray-900 mt-20 p-10  bg-blue-400 rounded-md '>
+                <h1 className='text-xl font-bold text-gray-900'>Iniciar sesión</h1>
+                <form className='flex flex-col mx-10 font-bold' onSubmit={submitForm} onChange={updateFormData} ref={form}>
+                    <Input name='correo' type='email' label='Correo' required={true} />
+                    <Input name='password' type='password' label='Contraseña' required={true} />
+                    <ButtonLoading
+                        disabled={Object.keys(formData).length === 0}
+                        loading={mutationLoading} /**le paso el mutationLoading para que muestre la animacion de carga */
+                        text='Iniciar Sesión'
+                    />
+                </form>
+                <span className='font-bold'>¿No tienes una cuenta?</span>{/**me permite dirigirme a la pagina de registro  */}
+                <Link to='/auth/register'>
+                    <span className='text-blue-700 font-bold'>Regístrate</span>
+                </Link>
+            </div>
         </div>
     );
 };

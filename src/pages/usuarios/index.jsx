@@ -7,7 +7,7 @@ import { Enum_Rol, Enum_EstadoUsuario } from 'utils/enums';
 import PrivateRoute from 'components/PrivateRoute';
 
 const IndexUsuarios = () => {
-  const { data, error, loading } = useQuery(GET_USUARIOS);// al hook le paso como parametro que es la
+  const { data, error, loading, refetch } = useQuery(GET_USUARIOS);// al hook le paso como parametro que es la
   // cadena de consulta o string de consulta de graphql escritas dentro de la funcio gql. es decir se le pasa toda la consulta esta esta guardada
   // en la variable GET_USUARIOS este hook me retorna la data el cual es toda la respuesta que le solicitamos al backend es decir los datos 
   // esta data es una palabra reservada lo mismo que el error si el backend retorna un error y el loanding es la varible que nos permite mostrar un 
@@ -26,6 +26,10 @@ const IndexUsuarios = () => {
   // pagina nuevamente 
 
   useEffect(() => {
+    refetch()
+  }, [])
+
+  useEffect(() => {
     console.log('data servidor', data);// estamos escuchando la variable data para mostrarla en consola si data sufre un 
     // cambio o se modifica se imprime en consola 
   }, [data]);
@@ -42,11 +46,14 @@ const IndexUsuarios = () => {
 
   return (
     //Pagina principal de consulta coleccion usuarios (IndexUsuarios)
-    <PrivateRoute roleList={['ADMINISTRADOR','LIDER']}>
+    <PrivateRoute roleList={['ADMINISTRADOR', 'LIDER']}>
       <div>
-        <h1>
-          Data Usuarios:
-        </h1>
+        <div className='font-bold text-2xl  flex items-center justify-center m-5 xl '>
+
+          <h1 >
+            Lista Usuarios
+          </h1>
+        </div>
         <table className='tabla'>
           <thead>
             <tr>
@@ -56,7 +63,7 @@ const IndexUsuarios = () => {
               <th>Identificación</th>
               <th>Rol</th>
               <th>Estado</th>
-              <th>Editar</th>
+              <th>Editar Estado </th>
             </tr>
           </thead>
           <tbody>

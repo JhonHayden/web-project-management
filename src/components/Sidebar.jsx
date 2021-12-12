@@ -11,6 +11,8 @@ const SidebarLinks = () => {
       en el app.jsx*/}
       {/* <SidebarRoute to='' title='Inicio' icon='fas fa-home' /> */}
       <SidebarRoute to='' title='Inicio' />
+      <SidebarRoute to='/perfil' title='Perfil' />
+
       <PrivateComponent roleList={['ADMINISTRADOR', 'LIDER']}>{/**me permite 
        * ocultar los componente hijos dentro del PrivateComponent si el rol de usuario no es ADMINISTRADOR
        */}

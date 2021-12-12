@@ -84,7 +84,7 @@ const PrivateLayout = () => {
       <Sidebar />
       <div className='flex w-full h-full'>
         <div className='w-full h-full  overflow-y-scroll'>
-          <h1>soy layout privado .. maqueta privada </h1>
+          <h1></h1>
           <Outlet />
         </div>
       </div>
