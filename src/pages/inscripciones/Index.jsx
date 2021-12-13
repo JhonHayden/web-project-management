@@ -33,7 +33,7 @@ const IndexInscripciones = () => {
   return (
 
 
-    <PrivateRoute roleList={['ADMINISTRADOR', 'LIDER']}> {/**me permite privar en acceso a esta pagina para roles distintos a los de roleList 
+    <PrivateRoute roleList={['LIDER']}> {/**me permite privar en acceso a esta pagina para roles distintos a los de roleList 
  */}
       <div className='p-10'>
         <div>Pagina de inscripciones</div>

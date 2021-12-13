@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';// me permite hacer enlaces y navegar  a otras paginas 
 import { Enum_Rol, Enum_EstadoUsuario } from 'utils/enums';
 import PrivateRoute from 'components/PrivateRoute';
+import PrivateComponent from 'components/PrivateComponent';
+
 
 const IndexUsuarios = () => {
   const { data, error, loading, refetch } = useQuery(GET_USUARIOS);// al hook le paso como parametro que es la
@@ -86,13 +88,32 @@ const IndexUsuarios = () => {
                    * en misnusculas 
                    */}
                     <td>
-                      <Link to={`/usuarios/editar/${u._id}`}>{/*cuando le dan click al icono o link me direcciona a la ruta
-                     http://localhost:3000/usuarios/editar/${u._id}  donde u._id carga el _id de mongoDB es decir el ObjectId almacenado 
-                     en la bd u reprensenta el usuario de la fila en cuestion donde le den click al ling o icono de editar esto 
-                     gracias al metodo .map que recorre una lista de usuarios y los renderiza uno a uno como una fila de una tabla 
-                     en html y accedo a los atributos de cada usurio para mostrar en las celdas con u.atributo */}
-                        <i className='fas fa-pen text-yellow-600 hover:text-yellow-400 cursor-pointer' />
-                      </Link>
+                      <PrivateComponent roleList={'LIDER'}>
+                        {u.estado === 'PENDIENTE' ? (
+
+                          <Link to={`/usuarios/editar/${u._id}`}>{/*cuando le dan click al icono o link me direcciona a la ruta
+                                http://localhost:3000/usuarios/editar/${u._id}  donde u._id carga el _id de mongoDB es decir el ObjectId almacenado 
+                                en la bd u reprensenta el usuario de la fila en cuestion donde le den click al ling o icono de editar esto 
+                                gracias al metodo .map que recorre una lista de usuarios y los renderiza uno a uno como una fila de una tabla 
+                                en html y accedo a los atributos de cada usurio para mostrar en las celdas con u.atributo */}
+                            <i className='fas fa-pen text-yellow-600 hover:text-yellow-400 cursor-pointer' />
+                          </Link>
+                        ) : (
+                          <div></div>
+                        )
+
+                        }
+                      </PrivateComponent>
+                      <PrivateComponent roleList={'ADMINISTRADOR'}>
+
+                        <Link to={`/usuarios/editar/${u._id}`}>{/*cuando le dan click al icono o link me direcciona a la ruta
+                              http://localhost:3000/usuarios/editar/${u._id}  donde u._id carga el _id de mongoDB es decir el ObjectId almacenado 
+                              en la bd u reprensenta el usuario de la fila en cuestion donde le den click al ling o icono de editar esto 
+                              gracias al metodo .map que recorre una lista de usuarios y los renderiza uno a uno como una fila de una tabla 
+                              en html y accedo a los atributos de cada usurio para mostrar en las celdas con u.atributo */}
+                          <i className='fas fa-pen text-yellow-600 hover:text-yellow-400 cursor-pointer' />
+                        </Link>
+                      </PrivateComponent>
                     </td>
                   </tr>
                 );

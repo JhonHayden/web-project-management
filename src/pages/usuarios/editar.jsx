@@ -8,8 +8,10 @@ import ButtonLoading from 'components/ButtonLoading';
 import useFormData from 'hooks/useFormData';
 import { toast } from 'react-toastify';
 import DropDown from 'components/Dropdown';
-import { Enum_EstadoUsuario } from 'utils/enums';
+import { Enum_EstadoUsuario, Enum_EstadoUsuarioEstudiante } from 'utils/enums';
 import { EDITAR_ESTADO_USUARIO } from 'graphql/usuarios/mutations';
+import PrivateComponent from 'components/PrivateComponent';
+
 
 const EditarUsuario = () => {
   const { form, formData, updateFormData } = useFormData(null);// uso el hook personalizado para capturar
@@ -113,9 +115,13 @@ const EditarUsuario = () => {
 
   return (
     <div className='flew flex-col w-full h-full items-center justify-center p-10'>
+
+
       <Link to='/usuarios'> {/**me retorna a la tabla de los usuarios */}
         <i className='fas fa-arrow-left text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900' />
       </Link>
+
+
       <h1 className='m-4 text-3xl text-gray-800 font-bold text-center'>Editar Usuario</h1>
       <form
         onSubmit={submitForm} // cuando se ejecuta el evento onSubmit es decir se oprime el boton 
@@ -164,17 +170,36 @@ const EditarUsuario = () => {
           disabled={true}
 
         />
-        <DropDown
-          label='Estado de la persona:'
-          name='estado'
-          defaultValue={queryData.Usuario.estado}
-          required={true}
-          options={Enum_EstadoUsuario}// le paso el enumerador de las 
-        // opciones de los estados del usuario: 
-        //   PENDIENTE: 'Pendiente',
-        //   AUTORIZADO: 'Autorizado',
-        //   NO_AUTORIZADO: 'No autorizado',
-        />
+        <PrivateComponent roleList={'ADMINISTRADOR'}>
+
+          <DropDown
+            label='Estado de la persona:'
+            name='estado'
+            defaultValue={queryData.Usuario.estado}
+            required={true}
+            options={Enum_EstadoUsuario}// le paso el enumerador de las 
+          // opciones de los estados del usuario: 
+          //   PENDIENTE: 'Pendiente',
+          //   AUTORIZADO: 'Autorizado',
+          //   NO_AUTORIZADO: 'No autorizado',
+          />
+        </PrivateComponent>
+        <PrivateComponent roleList={'LIDER'}>
+          {queryData.Usuario.estado !== 'NO_AUTORIZADO' ? (
+
+            <DropDown
+              label='Estado de la persona:'
+              name='estado'
+              required={true}
+              options={Enum_EstadoUsuarioEstudiante}
+              defaultValue={queryData.Usuario.estado}
+
+            />
+          ) : (
+            <div></div>
+          )}
+        </PrivateComponent>
+
         <span>Rol del usuario: {queryData.Usuario.rol}</span>
         <ButtonLoading
           disabled={Object.keys(formData).length === 0}//**me permite desahabilitar el submit cuando no modifico 

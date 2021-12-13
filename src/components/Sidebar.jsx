@@ -21,7 +21,7 @@ const SidebarLinks = () => {
       </PrivateComponent>
       <SidebarRoute to='/proyectos' title='Proyectos' />
       {/* <SidebarRoute to='/inscripciones' title='Inscripciones' icon='fab fa-amazon' /> */}
-      <PrivateComponent roleList={['ADMINISTRADOR', 'LIDER']}>{/**me permite 
+      <PrivateComponent roleList={['LIDER']}>{/**me permite 
        * ocultar los componente hijos dentro del PrivateComponent si el rol de usuario no es ADMINISTRADOR
        */}
         <SidebarRoute to='/inscripciones' title='Inscripciones' />
