@@ -35,8 +35,10 @@ const IndexInscripciones = () => {
 
     <PrivateRoute roleList={['LIDER']}> {/**me permite privar en acceso a esta pagina para roles distintos a los de roleList 
  */}
-      <div className='p-10'>
-        <div>Pagina de inscripciones</div>
+      <div className='p-10 flex flex-col'>
+        <div className='self-center m-2'>
+          <h1 className='text-2xl font-extrabold text-gray-900'>Lista de inscripciones </h1>
+        </div>
         <div className='my-4'>
           <AccordionInscripcion
             titulo='Inscripciones aprobadas'
@@ -65,7 +67,7 @@ const AccordionInscripcion = ({ data, titulo, refetch = () => { } }) => {
         {titulo} ({data.length})
       </AccordionSummaryStyled>
       <AccordionDetailsStyled>
-        <div className='flex'>
+        <div className='grid grid-cols-2'>
           {data &&
             data.map((inscripcion) => {
               return <Inscripcion inscripcion={inscripcion} refetch={refetch} />;
@@ -128,12 +130,46 @@ const Inscripcion = ({ inscripcion, refetch }) => {
   };
 
   return (
-    <div className='bg-gray-900 text-gray-50 flex flex-col p-6 m-2 rounded-lg shadow-xl'>
-      <span>{inscripcion.proyecto.nombre}</span>
-      <span>{inscripcion.estudiante.nombre}</span>
-      <span>{inscripcion.estado}</span>
+    <div className='bg-gray-900 text-gray-50  p-6 m-2 rounded-lg shadow-xl'>
+      <div>
+        <span className='mr-2'>Nombre proyecto:</span>
+        <span>{inscripcion.proyecto.nombre}</span>
+      </div>
+      <div>
+        <span className='mr-2'>Fecha ingreso:</span>
+        <span>{inscripcion.fechaIngreso}</span>
+      </div>
+      <div>
+        <span className='mr-2'>Fecha egreso:</span>
+        <span>{inscripcion.fechaEgreso}</span>
+        {inscripcion.fechaEgreso ? (
+          <div>
+            <div>
+              <span className='mr-2'>Estado proyecto:</span>
+              <span>{inscripcion.proyecto.estado}</span>
+            </div>
+            <div>
+              <span className='mr-2'>Fase proyecto:</span>
+              <span>{inscripcion.proyecto.fase}</span>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+      <div>
+        <span>Estudiante: </span>
+        <span className='mr-1'>{inscripcion.estudiante.nombre}</span>
+        <span>{inscripcion.estudiante.apellido}</span>
+
+      </div>
+      <div>
+        <span className='mr-2'>Estado Inscripcion:</span>
+        <span>{inscripcion.estado}</span>
+
+      </div>
       {inscripcion.estado === 'PENDIENTE' && (
-        <div>
+        <div className='flex justify-between mt-4'>
 
           <ButtonLoading
             onClick={() => {

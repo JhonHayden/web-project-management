@@ -249,8 +249,8 @@ const AccordionProyecto = ({ proyecto, refetch }) => {// recibe como prop o inpu
                     <PrivateComponent roleList={['ESTUDIANTE']}>
                         <InscripcionProyecto //componente que me ejecuta la mutacion de crear inscripcion a un proyecto 
                             idProyecto={proyecto._id} // props id de los proyectos 
-                            estado={proyecto.estado}
-                            inscripciones={proyecto.inscripciones}// prop de inscripciones le paso la informacion traida con le 
+                            estadoProyecto={proyecto.estado}
+                            proyectoInscripciones={proyecto.inscripciones}// prop de inscripciones le paso la informacion traida con le 
                         // query de proyectos de las inscripciones a cada proyecto para evaluar si ya se esta incrito en un proyecto 
                         // y deshabilitar el boton y mostrar mensaje de que ya se esta inscrito en el proyecto 
                         />
@@ -682,13 +682,13 @@ const FormEditObjetivosRolLider = ({ idProyecto, descripcion, refetch, setMostra
 
 
 
-const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
+const InscripcionProyecto = ({ idProyecto, estadoProyecto, proyectoInscripciones }) => {
     const [estadoInscripcion, setEstadoInscripcion] = useState('');// guardare el estado de la inscripcion existente retornada por el filter
     const [crearInscripcion, { data, loading, error }] = useMutation(CREAR_INSCRIPCION);
     const { userData } = useUser();// permite traer la informacion del usuario que ah  iniciado sesion
     // console.log("datos del usuario que inicio sesion :", userData)
     // console.log("idproyecto", idProyecto)
-    console.log("Inscripciones al proyecto: ", inscripciones)
+    console.log("proyectoInscripciones al proyecto: ", proyectoInscripciones)
 
 
 
@@ -696,22 +696,22 @@ const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
 
 
     useEffect(() => {
-        if (userData && inscripciones) { // me valida  que exista y tenga contenido las variables userData e inscripciones y si 
+        if (userData && proyectoInscripciones) { // me valida  que exista y tenga contenido las variables userData e proyectoInscripciones y si 
             // tiene contenido hace el filtro siguiente 
-            const filtro = inscripciones.filter((el) => el.estudiante._id === userData._id);// el metodo filter itera todo el 
-            // array de inscripciones y valida a cada elemento del array cumpla con la condicion o funcion dentro de los 
-            // parentesis del metodo filter(condicion) y en el ejemplo la condicion es (el) => el.estudiante._id === userData._id
-            // de cada elemento (el) de la inscripcion, cada elemento es un objeto de inscripcion y miro la propiedad estudiante y luego 
-            // su id y lo comparo con el id del usuario que inicio sesion y si es igual me lo retorna en la varible filtro 
-            // console.log ("filtro: ", filtro)
+            // const filtro = proyectoInscripciones.filter((el) => el.estudiante._id === userData._id);// el metodo filter itera todo el 
+            // // array de proyectoInscripciones y valida a cada elemento del array cumpla con la condicion o funcion dentro de los 
+            // // parentesis del metodo filter(condicion) y en el ejemplo la condicion es (el) => el.estudiante._id === userData._id
+            // // de cada elemento (el) de la inscripcion, cada elemento es un objeto de inscripcion y miro la propiedad estudiante y luego 
+            // // su id y lo comparo con el id del usuario que inicio sesion y si es igual me lo retorna en la varible filtro 
+            // // console.log ("filtro: ", filtro)
 
-            if (filtro.length > 0) { // tengo que validar si la lista del filtro no esta vacia para evitar los null si esta vacia no 
-                // podre acceder obviamente a su propiedad estado dado que no existe 
-                setEstadoInscripcion(filtro[0].estado);//guardo el estado de la primera inscripcion  es decir la inscripcion 
-                // en la posicion 0 del array retornado del filter en el estado 
-            }
+            // if (filtro.length > 0) { // tengo que validar si la lista del filtro no esta vacia para evitar los null si esta vacia no 
+            //     // podre acceder obviamente a su propiedad estado dado que no existe 
+            //     setEstadoInscripcion(filtro[0].estadoProyecto);//guardo el estado de la primera inscripcion  es decir la inscripcion 
+            //     // en la posicion 0 del array retornado del filter en el estado 
+            // }
         }
-    }, [userData, inscripciones]);
+    }, [userData, proyectoInscripciones]);
 
     useEffect(() => {
         if (data) {// data es la respuesta de la api a la mutacion de crear incripcion
@@ -739,8 +739,8 @@ const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
             ) : (
                 <ButtonLoading
                     onClick={() => confirmarInscripcion()}
-                    disabled={estado === 'INACTIVO'}// me permite bloquear el boton de inscribirme en un proyecto si 
-                    // el estado del proyecto esta inactivo 
+                    disabled={estadoProyecto === 'INACTIVO'}// me permite bloquear el boton de inscribirme en un proyecto si 
+                    // el estadoProyecto del proyecto esta inactivo 
                     loading={loading}
                     text='Inscribirme en este proyecto'
                 />
