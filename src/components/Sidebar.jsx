@@ -1,5 +1,7 @@
+import { useAuth } from 'context/authContext';
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import PrivateComponent from './PrivateComponent';
 
 const SidebarLinks = () => {
   return (
@@ -7,20 +9,61 @@ const SidebarLinks = () => {
       {/*Botones de navegacion del sidebar
       to = ruta del pagina a navegar y es igual a la definida en los Routes 
       en el app.jsx*/}
-      <SidebarRoute to='' title='Inicio' icon='fas fa-home' />
-      <SidebarRoute to='/usuarios' title='Usuarios' icon='fas fa-user' />
-      <SidebarRoute to='/page2' title='Pagina2' icon='fas fa-smile-wink' />
-      <SidebarRoute to='/category1' title='Catego 1' icon='fab fa-amazon' />
-      <SidebarRoute to='/category1/page1' title='Test' icon='fas fa-car' />
+      {/* <SidebarRoute to='' title='Inicio' icon='fas fa-home' /> */}
+      <SidebarRoute to='' title='Inicio' />
+      <SidebarRoute to='/perfil' title='Perfil' />
+
+      <PrivateComponent roleList={['ADMINISTRADOR', 'LIDER']}>{/**me permite 
+       * ocultar los componente hijos dentro del PrivateComponent si el rol de usuario no es ADMINISTRADOR
+       */}
+        {/* <SidebarRoute to='/usuarios' title='Usuarios' icon='fas fa-user' /> */}
+        <SidebarRoute to='/usuarios' title='Usuarios' />
+      </PrivateComponent>
+      <SidebarRoute to='/proyectos' title='Proyectos' />
+      {/* <SidebarRoute to='/inscripciones' title='Inscripciones' icon='fab fa-amazon' /> */}
+      <PrivateComponent roleList={['LIDER']}>{/**me permite 
+       * ocultar los componente hijos dentro del PrivateComponent si el rol de usuario no es ADMINISTRADOR
+       */}
+        <SidebarRoute to='/inscripciones' title='Inscripciones' />
+      </PrivateComponent>
+
+      <PrivateComponent roleList={['ESTUDIANTE']}>{/**me permite 
+       * ocultar los componente hijos dentro del PrivateComponent si el rol de usuario no es ADMINISTRADOR
+       */}
+        <SidebarRoute to='/proyectosinscritos' title='Mis proyectos' />
+      </PrivateComponent>
+      <Logout />
     </ul>
+  );
+};
+
+// componente  boton de cerrar sesion 
+const Logout = () => {
+
+  const { setToken } = useAuth();
+  const deleteToken = () => {
+    console.log('eliminar token');
+    setToken(null);
+    window.location.reload(true) // me permite refrescar la pagina cuando se hace cierre de sesion 
+    
+  };
+  return (
+    <li onClick={() => deleteToken()}>
+      <NavLink to='/auth/login' className='sidebar-route text-red-700'>
+        <div className='flex items-center'>
+          <i className='fas fa-sign-out-alt' />
+          <span className='text-sm  ml-2'>Cerrar Sesión</span>
+        </div>
+      </NavLink>
+    </li>
   );
 };
 
 const Logo = () => {
   return (
     <div className='py-3 w-full flex flex-col items-center justify-center'>
-      <img src='logo.png' alt='Logo' className='h-16' />
-      <span className='my-2 text-xl font-bold text-center'>Título de Mi Aplicación</span>
+      {/* <img src='logo.png' alt='Logo' className='h-16' /> */}
+      <span className='my-2 text-xl font-bold text-center'>Web Project Management</span>
     </div>
   );
 };
@@ -70,8 +113,8 @@ const SidebarRoute = ({ to, title, icon }) => {
         to={to}
         className={({ isActive }) =>
           isActive
-            ? 'sidebar-route text-white bg-indigo-700'
-            : 'sidebar-route text-gray-900 hover:text-white hover:bg-indigo-400'
+            ? 'sidebar-route text-white bg-blue-600'
+            : 'sidebar-route text-gray-900 hover:text-white hover:bg-blue-300'
         }
       >
         <div className='flex items-center'>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from 'components/Input';
 import DropDown from 'components/Dropdown';
 import ButtonLoading from 'components/ButtonLoading';
@@ -9,11 +9,20 @@ import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router';// hook paara redireccionar al home o a cualquier pagina deacuerdo a la ruta
 // que le demos 
 import { Enum_Rol } from 'utils/enums';
+import { useAuth } from 'context/authContext';// importo el contexto de autenticacion 
+import { toast } from 'react-toastify';
 
 
 // Pagina de registro 
 
 const Register = () => {
+
+  const { setToken } = useAuth();// permite traer y poder usar la funcion de guardar el token tanto en el estado como en el local 
+  // storage pero como string gracias al JSON.stringify() que tiene dentro esta funcion de setToken
+
+
+  const [error, setError] = useState(false)
+  const [registrado, setRegistrado] = useState(false)
   const navigate = useNavigate();// uso del hook para redireccionar a otra pagina en este caso 
   // lo usaremos para direcionar al home cuando el usuario ya se registro y existe token 
   const { form, formData, updateFormData } = useFormData();// uso el hook personalizado para capturar
@@ -44,20 +53,49 @@ const Register = () => {
       // salte error en la siguiente if .. dado que en un principio dataMutation es null entonces el siguiente if 
       // fallaria si no esta el primer if  
       if (dataMutation.registro.token) {// si tiene el token sigue lo siguiente 
-        localStorage.setItem('token', dataMutation.registro.token);// me permite guardar el token en el local 
-        // storage el primer parametro es la clave y el segundo es el token el value 
-        navigate('/');  // me permite que cuando recibe el token es decir exista token dentro de la datamutation 
+
+        toast.success("Registro exitoso")
+        setRegistrado(true)
+        // setToken(dataMutation.registro.token);// llamado de la funcion de guardar el token tanto en el estado como en el local 
+        // storage pero como string gracias al JSON.stringify() que tiene dentro esta funcion de setToken
+        // localStorage.setItem('token', dataMutation.registro.token);// otra forma que me permite guardar el token en el local 
+        // storage el primer parametro es la clave y el segundo es el token el value .. 
+        // navigate('/');  // me permite que cuando recibe el token es decir exista token dentro de la datamutation 
         // que retorna la mutacion cuando termina de hacer su trabajo en esta data esta dentro el token si 
         // hay token  navigate me direcciona al home ('/')
+        // navigate('/');
+
+
+
       }
     }
   }, [dataMutation]);
 
+  // useEffect(() => {
+
+  //   if (errorMutation) {
+
+  //     // setError(true)
+  //     // console.log("error:", errorMutation)
+  //     // toast.error("Usuario ya registrado")
+  //     // navigate('/auth/login'); 
+  //   }
+
+  // }, [errorMutation]);
+
+  // if (error){
+  //   return(
+  //     <div> Usuario Ya Registrado no puede registrarse dos veces </div>
+
+  //   )
+  // }
+
   return (
-    <div className='flex flex-col h-full w-full items-center justify-center'>
-      <h1 className='text-3xl font-bold my-4'>Regístrate</h1>
-      <form className='flex flex-col' onSubmit={submitForm} onChange={updateFormData} ref={form}>
-        <div className='grid grid-cols-2 gap-5'>
+    // <div className='flex flex-col h-full w-full items-center justify-center'>
+    <div className='mx-60 my-96 border border-gray-700 items-center bg-blue-400 mt-20 p-10 rounded-md '>
+      <h1 className='mb-4  text-center text-2xl font-extrabold text-gray-800'>Regístrate</h1>
+      <form className='flex flex-col mx-1' onSubmit={submitForm} onChange={updateFormData} ref={form}>
+        <div className='grid grid-cols-2 items-center  gap-2 rounded-md font-bold'>
           <Input label='Nombre:' name='nombre' type='text' required />
           <Input label='Apellido:' name='apellido' type='text' required />
           <Input label='Documento:' name='identificacion' type='text' required />
@@ -66,15 +104,18 @@ const Register = () => {
           <Input label='Contraseña:' name='password' type='password' required />
         </div>
         <ButtonLoading
-          disabled={Object.keys(formData).length === 0}
+          disabled={Object.keys(formData).length === 0 || registrado}
           loading={false}
           text='Registrarme'
         />
       </form>
-      <span>¿Ya tienes una cuenta?</span>
-      {/* <Link to='/auth/login'>
-        <span className='text-blue-700'>Inicia sesión</span>
-      </Link> */}
+      <div className='flex  justify-between'>
+
+        <span className='text-xl font-bold mr-9 '>¿Ya tienes una cuenta?</span>
+        <Link to='/auth/login'> {/**me permite dirigirme al inicio de sesion, pagina login */}
+          <span className='font-medium text-xl text-blue-700 hover:text-blue-900 '>Inicia sesión</span>
+        </Link>
+      </div>
     </div>
   );
 };

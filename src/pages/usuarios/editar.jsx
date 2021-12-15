@@ -7,9 +7,11 @@ import Input from 'components/Input';// importamos el componente input para los 
 import ButtonLoading from 'components/ButtonLoading';
 import useFormData from 'hooks/useFormData';
 import { toast } from 'react-toastify';
-import { EDITAR_USUARIO } from 'graphql/usuarios/mutations'; // template de graphql de la mutacion editarUsuario 
 import DropDown from 'components/Dropdown';
-import { Enum_EstadoUsuario } from 'utils/enums';
+import { Enum_EstadoUsuario, Enum_EstadoUsuarioEstudiante } from 'utils/enums';
+import { EDITAR_ESTADO_USUARIO } from 'graphql/usuarios/mutations';
+import PrivateComponent from 'components/PrivateComponent';
+
 
 const EditarUsuario = () => {
   const { form, formData, updateFormData } = useFormData(null);// uso el hook personalizado para capturar
@@ -53,11 +55,11 @@ const EditarUsuario = () => {
 
   console.log(queryData);
 
-  const [editarUsuario, { data: mutationData, loading: mutationLoading, error: mutationError }] =
-    useMutation(EDITAR_USUARIO); // declarion del hook que me permite usar las mutaciones 
+  const [editarEstadoUsuario, { data: mutationData, loading: mutationLoading, error: mutationError }] =
+    useMutation(EDITAR_ESTADO_USUARIO); // declarion del hook que me permite usar las mutaciones 
   // este hook me entrega la funcion de la mutacion una funcion con el nombre que yo desee que reprensenta
   // la funcion de mutacion que quiero ejecutar y me entrega un objeto con los atributos de data el cual 
-  // es la data que retorna el servidor depues de ejecutar la funcion de mutacion editarUsuario, un loading
+  // es la data que retorna el servidor depues de ejecutar la funcion de mutacion editarEstadoUsuario, un loading
   // de tipo boolean el cual reprensenta el tiempo de carga de desde la ejecucion de la mutacion hasta la respuesta
   // y el error el cual es una propiedad o variable que trae el error si la mutacion no se pudo ejecutar por 
   // alguna razon 
@@ -80,7 +82,7 @@ const EditarUsuario = () => {
     delete formData.rol;
 
     // console.log('form data', formData)
-    editarUsuario({// ejecuta la mutacion y le pasa las variables a modificar el _id es el usuario a editar 
+    editarEstadoUsuario({// ejecuta la mutacion y le pasa las variables a modificar el _id es el usuario a editar 
       // y el formData que tiene los campos editados que se registraron en cada input del formulario 
       variables: { _id, ...formData }, // ... significa ponga todo lo mismo que esta en formData el cual tiene
       //   todos los datos de los inputs del formulario, y es un objeto de clave y valor donde la clave es 
@@ -113,9 +115,13 @@ const EditarUsuario = () => {
 
   return (
     <div className='flew flex-col w-full h-full items-center justify-center p-10'>
+
+
       <Link to='/usuarios'> {/**me retorna a la tabla de los usuarios */}
         <i className='fas fa-arrow-left text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900' />
       </Link>
+
+
       <h1 className='m-4 text-3xl text-gray-800 font-bold text-center'>Editar Usuario</h1>
       <form
         onSubmit={submitForm} // cuando se ejecuta el evento onSubmit es decir se oprime el boton 
@@ -135,6 +141,7 @@ const EditarUsuario = () => {
           name='nombre'
           defaultValue={queryData.Usuario.nombre}
           required={true}
+          disabled={true}
         />
         <Input
           label='Apellido de la persona:'
@@ -142,6 +149,8 @@ const EditarUsuario = () => {
           name='apellido'
           defaultValue={queryData.Usuario.apellido}
           required={true}
+          disabled={true}
+
         />
         <Input
           label='Correo de la persona:'
@@ -149,6 +158,8 @@ const EditarUsuario = () => {
           name='correo'
           defaultValue={queryData.Usuario.correo}
           required={true}
+          disabled={true}
+
         />
         <Input
           label='Identificación de la persona:'
@@ -156,18 +167,39 @@ const EditarUsuario = () => {
           name='identificacion'
           defaultValue={queryData.Usuario.identificacion}
           required={true}
+          disabled={true}
+
         />
-        <DropDown
-          label='Estado de la persona:'
-          name='estado'
-          defaultValue={queryData.Usuario.estado}
-          required={true}
-          options={Enum_EstadoUsuario}// le paso el enumerador de las 
-        // opciones de los estados del usuario: 
-        //   PENDIENTE: 'Pendiente',
-        //   AUTORIZADO: 'Autorizado',
-        //   NO_AUTORIZADO: 'No autorizado',
-        />
+        <PrivateComponent roleList={'ADMINISTRADOR'}>
+
+          <DropDown
+            label='Estado de la persona:'
+            name='estado'
+            defaultValue={queryData.Usuario.estado}
+            required={true}
+            options={Enum_EstadoUsuario}// le paso el enumerador de las 
+          // opciones de los estados del usuario: 
+          //   PENDIENTE: 'Pendiente',
+          //   AUTORIZADO: 'Autorizado',
+          //   NO_AUTORIZADO: 'No autorizado',
+          />
+        </PrivateComponent>
+        <PrivateComponent roleList={'LIDER'}>
+          {queryData.Usuario.estado !== 'NO_AUTORIZADO' ? (
+
+            <DropDown
+              label='Estado de la persona:'
+              name='estado'
+              required={true}
+              options={Enum_EstadoUsuarioEstudiante}
+              defaultValue={queryData.Usuario.estado}
+
+            />
+          ) : (
+            <div></div>
+          )}
+        </PrivateComponent>
+
         <span>Rol del usuario: {queryData.Usuario.rol}</span>
         <ButtonLoading
           disabled={Object.keys(formData).length === 0}//**me permite desahabilitar el submit cuando no modifico 

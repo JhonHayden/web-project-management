@@ -11,10 +11,11 @@
 }
 
 .tabla th {
-  background-color: #04aa46;
+  background-color: #0d87eb;
   color: white;
   padding-top: 12px;
   padding-bottom: 12px;
+  
   text-align: left;
 }
 

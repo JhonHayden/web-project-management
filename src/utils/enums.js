@@ -17,6 +17,25 @@ const Enum_EstadoUsuario = {
   PENDIENTE: 'Pendiente',
   AUTORIZADO: 'Autorizado',
   NO_AUTORIZADO: 'No autorizado',
+
+};
+const Enum_EstadoUsuarioEstudiante = {
+  PENDIENTE: 'Pendiente',
+  AUTORIZADO: 'Autorizado',
 };
 
-export { Enum_Rol, Enum_EstadoUsuario };
+const Enum_EstadoProyecto = {
+  ACTIVO: 'Activo',
+  INACTIVO: 'Inactivo',
+};
+
+
+const Enum_TipoObjetivo = {
+  GENERAL: 'General',
+  ESPECIFICO: 'Especifico',
+}
+
+
+
+
+export { Enum_Rol, Enum_EstadoUsuario, Enum_EstadoProyecto, Enum_TipoObjetivo, Enum_EstadoUsuarioEstudiante };
