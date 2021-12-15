@@ -21,6 +21,9 @@ const PROYECTOS = gql`
         apellido
         correo
       }
+      avances{
+          _id
+        }
       inscripciones {
         estado
         proyecto{   # esta generando conflicto de  null con otra pagina cuando pido al mas 
@@ -33,9 +36,48 @@ const PROYECTOS = gql`
           _id
           
         }
+       
       }
     }
   }
 `;
 
-export { PROYECTOS };
+const GET_PROYECTO = gql `
+query Proyecto($idProyecto: String!) {
+  Proyecto(_id: $idProyecto) {
+      _id
+      nombre
+      estado
+      fechaInicio
+      fechaFin
+      fase
+      presupuesto
+      objetivos {
+        _id
+        descripcion
+        tipo
+      }
+      lider {
+        _id
+        nombre
+        apellido
+        correo
+      }
+      avances{
+          _id
+        }
+      inscripciones {
+        estado
+       
+        estudiante {
+          _id
+          
+        }
+       
+      } 
+  }
+}
+
+`;
+
+export { PROYECTOS, GET_PROYECTO };

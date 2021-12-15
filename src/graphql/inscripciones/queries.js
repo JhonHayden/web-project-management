@@ -18,6 +18,9 @@ const GET_INSCRIPCIONES = gql`
         nombre
         fase
         estado
+        fechaInicio
+        fechaFin
+        presupuesto
         objetivos {
           descripcion
           tipo
@@ -25,7 +28,12 @@ const GET_INSCRIPCIONES = gql`
         lider {
           _id
           nombre
+        apellido
+
         }
+        # avances{
+        #   _id
+        # }
       }
     }
   }

@@ -18,6 +18,11 @@ import {
 import { ObservacionContext } from 'context/observacionContext';
 import { useObservacionContext } from 'context/observacionContext';
 import { CREAR_OBSERVACION } from 'graphql/avances/mutaciones';
+import { EDITAR_OBSERVACION } from 'graphql/avances/mutaciones';
+import { GET_PROYECTO } from 'graphql/proyectos/queries';
+import { AccordionStyledPadre } from 'components/Accordion';
+import { AccordionSummaryStyledPadre } from 'components/Accordion';
+import { AccordionDetailsStyledPadre } from 'components/Accordion';
 
 
 
@@ -40,13 +45,26 @@ const AvancesAProyecto = () => {
         refetch } = useQuery(GET_AVANCES, { variables: { idProyecto } })
 
 
+    const {
+        data: dataQueryProyecto,
+        loading: loadingQueryProyecto,
+        error: errorQueryProyecto, } = useQuery(GET_PROYECTO, { variables: { idProyecto } })
+
+
+useEffect(() => {
+    refetch()
+}, [])
+
+    useEffect(() => {
+        console.log(dataQueryProyecto)
+    }, [dataQueryProyecto])
     useEffect(() => {
         console.log("dataQueryAvances: ", dataQueryAvances)
     }, [dataQueryAvances])
 
     if (loadingQueryAvances) return <div>Cargando...</div>;//
 
-    if (dataQueryAvances.Avances) {
+    if (dataQueryAvances.Avances && dataQueryProyecto) {
 
         return (
             <div className='p-4 flex flex-col'>
@@ -63,20 +81,15 @@ const AvancesAProyecto = () => {
                     </Link>
                 </PrivateComponent>
                 <div className='self-center'>
-                    <h1 className='text-2xl font-extrabold text-gray-900'>Lista de Avances </h1>
+                    <h1 className='text-2xl font-extrabold text-gray-900'>Lista de Avances del proyecto: {dataQueryProyecto.Proyecto.nombre} </h1>
+                    {/* <h1 className='text-2xl font-extrabold text-gray-900'>Lista de Avances del proyecto:  </h1> */}
                 </div>
 
-                {dataQueryAvances.Avances.map((avance) => {
-
-                    return (
-
-                        <AccordionAvance
-                            key={nanoid()}
-                            avance={avance}
-                            refetch={refetch} />
-                    )
-                })}
-
+                <AccordionProyecto
+                    dataQueryAvances={dataQueryAvances}
+                    proyecto={dataQueryProyecto.Proyecto}
+                    refetch={refetch}
+                />
 
             </div>
         )
@@ -90,6 +103,131 @@ const AvancesAProyecto = () => {
 
 
 }
+
+const AccordionProyecto = ({ dataQueryAvances, proyecto, refetch }) => {
+
+
+    return (
+
+        <div className='p-10 '>
+
+            <AccordionStyledPadre>
+                <AccordionSummaryStyledPadre expandIcon={<i className='fas fa-chevron-down text-white' />}>
+                    <div className='flex  w-full justify-between'>{/** uppercase me pone todo en mayusculas*/}
+                        <div className=' flex flex-col uppercase font-bold text-gray-100  '>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Nombre proyecto:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    {proyecto.nombre}
+
+                                </div>
+                            </div>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Fecha inicio:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    {proyecto.fechaInicio}
+
+                                </div>
+                            </div>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Fecha fin:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    {proyecto.fechaFin}
+
+
+                                </div>
+                            </div>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Presupuesto:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    {proyecto.presupuesto}
+
+
+                                </div>
+                            </div>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Estado:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    {proyecto.estado}
+
+
+                                </div>
+                            </div>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Fase:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    {proyecto.fase}
+                                </div>
+                            </div>
+                            <div className='flex'>
+                                <div className='mt-1 text-gray-50 mx-2'>
+                                    Lider:
+                                </div>
+                                <div className=' text-xl text-gray-50 mx-2'>
+                                    <span className='mr-1'>
+                                        {proyecto.lider.nombre}
+                                    </span>
+                                    <span>
+                                        {proyecto.lider.apellido}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </AccordionSummaryStyledPadre>
+                <AccordionDetailsStyledPadre>
+
+
+                    <Avances
+                        proyecto={proyecto}
+                        dataQueryAvances={dataQueryAvances}
+                        refetch={refetch}
+
+                    />
+
+                </ AccordionDetailsStyledPadre >
+            </AccordionStyledPadre>
+
+        </div>
+
+    )
+
+}
+
+const Avances = ({ proyecto, dataQueryAvances, refetch }) => {
+
+    return (
+        <div>
+
+            {
+                dataQueryAvances.Avances.map((avance) => {
+
+                    return (
+
+                        <AccordionAvance
+                            key={nanoid()}
+                            avance={avance}
+                            refetch={refetch} />
+                    )
+                })
+            }
+
+        </div>
+    )
+}
+
 
 const AccordionAvance = ({ avance, refetch }) => {
 
@@ -105,13 +243,30 @@ const AccordionAvance = ({ avance, refetch }) => {
                     <AccordionSummaryStyled className='bg-red-500  ' expandIcon={<i className='fas fa-chevron-down' />}>
                         <div className='flex  w-full justify-between'>{/** uppercase me pone todo en mayusculas*/}
                             <div className='uppercase font-bold text-gray-100  '>
-                                <div>
-                                    Fecha: {avance.fecha}
+                                <div className='flex'>
+                                    <div className='mt-1 text-gray-50 mx-2'>
+                                        Fecha avance:
+                                    </div>
+                                    <div className=' text-xl text-gray-50 mx-2'>
+                                        {avance.fecha}
+                                    </div>
+                                </div>
+                                <div className='flex'>
+                                    <div className='mt-1 text-gray-50 mx-2'>
+                                        Avance creado por:
+                                    </div>
+                                    <div className=' text-xl text-gray-50 mx-2'>
+                                        <span className='mr-1'>
+                                            {avance.creadoPor.nombre}
+                                        </span>
+                                        <span>
+                                            {avance.creadoPor.apellido}
+                                        </span>
+                                    </div>
                                 </div>
                                 <div>
-                                    Proyecto: {avance.proyecto.nombre}
-                                </div>
 
+                                </div>
                             </div>
                         </div>
                     </AccordionSummaryStyled>
@@ -119,7 +274,7 @@ const AccordionAvance = ({ avance, refetch }) => {
                         <div className='flex justify-between '>
                             <PrivateComponent roleList={['ESTUDIANTE']}> {/**  */}
                                 <ButtonLoading
-                                    disabled={false}
+                                    disabled={avance.proyecto.estado === 'ACTIVO' ? false : true}
                                     loading={false}
                                     text='Editar Avance '
                                     onClick={() => {
@@ -128,20 +283,10 @@ const AccordionAvance = ({ avance, refetch }) => {
                                 />
                             </PrivateComponent>
                             <PrivateComponent roleList={['LIDER']}> {/**  */}
-                                <div>
-
-                                    <ButtonLoading
-                                        disabled={false}
-                                        loading={false}
-                                        text='Editar Observación'
-                                        onClick={() => {
-                                            setShowDialog(true);
-                                        }}
-                                    />
-                                </div>
+                                <div></div>
                                 <div>
                                     <ButtonLoading
-                                        disabled={false}
+                                        disabled={avance.proyecto.estado === 'ACTIVO' ? false : true}
                                         loading={false}
                                         text='Agregar Observación'
                                         onClick={() => {
@@ -152,16 +297,16 @@ const AccordionAvance = ({ avance, refetch }) => {
                                 </div>
                             </PrivateComponent>
                         </div>
-
-
-                        <div>
-                           Avance creado por: {avance.creadoPor.nombre}
+                        <div className='flex flex-col'>
+                            <div className=' text-xl text-gray-900 mx-2 font-bold self-center m-10'>
+                                Descripción del avance
+                            </div>
+                            <div className='mt-1 text-gray-900 mx-2 font-semibold mb-6'>
+                                {avance.descripcion}
+                            </div>
                         </div>
-                        <div>
-                            Descripción del avance: {avance.descripcion}
-                        </div>
-                        <div>
-                            <h1>Observaciones del lider:</h1>
+                        <div className='flex flex-col mt-14'>
+                            <h1 className='self-center font-bold text-xl mb-3'>Observaciones del lider</h1>
                             {avance.observaciones ? (avance.observaciones.map((observacion, index) => {
 
                                 const x = index + 1
@@ -169,7 +314,17 @@ const AccordionAvance = ({ avance, refetch }) => {
                                 return (
                                     <div>
                                         <div>
-                                            {x}: {observacion.descripcionObservacion}
+
+                                            <Observacion
+                                                key={observacion._id}
+                                                indexObservacion={x}
+                                                descripcionObservacion={observacion.descripcionObservacion}
+                                                estadoProyecto={avance.proyecto.estado}
+                                                idAvance={avance._id}
+                                                refetch={refetch}
+
+
+                                            />
                                         </div>
 
                                     </div>
@@ -201,12 +356,10 @@ const AccordionAvance = ({ avance, refetch }) => {
                             fecha={avance.fecha}
                             descripcion={avance.descripcion}
                             setShowDialog={setShowDialog}
-                            refetch={refetch} />
+                            refetch={refetch}
+                            estadoProyecto={avance.proyecto.estado} />
                     </PrivateComponent>
-                    <PrivateComponent roleList={['LIDER']}>
-                        <FormEditAvanceLider _id={avance._id} // componente de formulario de editar un avance Rol Lider 
-                        />
-                    </PrivateComponent>
+
 
                 </Dialog>
                 <Dialog open={mostrarFormularioObservaciones}
@@ -219,6 +372,7 @@ const AccordionAvance = ({ avance, refetch }) => {
                             idAvance={avance._id}
                             setMostrarFormularioObservaciones={setMostrarFormularioObservaciones}
                             refetch={refetch}
+                            estadoProyecto={avance.proyecto.estado}
 
                         />
                     </div>
@@ -228,7 +382,7 @@ const AccordionAvance = ({ avance, refetch }) => {
     )
 }
 
-const FormEditAvanceEstudiante = ({ _id, fecha, descripcion, setShowDialog, refetch }) => {
+const FormEditAvanceEstudiante = ({ _id, fecha, descripcion, setShowDialog, refetch, estadoProyecto }) => {
 
     const { form, formData, updateFormData } = useFormData();
     const [editarAvance, { data: dataMutation, loading, error }] = useMutation(EDITAR_AVANCE);
@@ -291,7 +445,10 @@ const FormEditAvanceEstudiante = ({ _id, fecha, descripcion, setShowDialog, refe
                         required
                         defaultValue={descripcion}></textarea>
                 </label>
-                <ButtonLoading disabled={false} loading={false} text='Confirmar' />
+                <ButtonLoading
+                    disabled={estadoProyecto === 'ACTIVO' ? false : true}
+                    loading={false}
+                    text='Confirmar' />
 
             </form>
 
@@ -301,52 +458,9 @@ const FormEditAvanceEstudiante = ({ _id, fecha, descripcion, setShowDialog, refe
 }
 
 
-const FormEditAvanceLider = ({ _id }) => {
-
-    const { form, formData, updateFormData } = useFormData();
-    const [editarAvance, { data: dataMutation, loading, error }] = useMutation(EDITAR_AVANCE);
 
 
-
-    const submitForm = (e) => {
-        e.preventDefault();
-        editarAvance({
-            variables: {
-                _id,
-                estado: formData.estado,
-            },
-        });
-    };
-
-    useEffect(() => {
-        console.log('data mutation', dataMutation);
-    }, [dataMutation]);
-
-    return (
-
-        <div className='p-4 ' >
-            <h1 className='font-bold'>Editar Avance </h1>
-
-            <form
-                ref={form}
-                onChange={updateFormData}
-                onSubmit={submitForm}
-                action=""
-                className='flex flex-col items-center'>
-
-
-
-                <ButtonLoading disabled={false} loading={false} text='Confirmar' />
-
-            </form>
-
-        </div>
-
-    )
-}
-
-
-const FormAgregarObservacion = ({ idAvance, setMostrarFormularioObservaciones, refetch }) => {
+const FormAgregarObservacion = ({ idAvance, setMostrarFormularioObservaciones, refetch, estadoProyecto }) => {
 
     const { form, formData, updateFormData } = useFormData();
 
@@ -358,7 +472,7 @@ const FormAgregarObservacion = ({ idAvance, setMostrarFormularioObservaciones, r
     useEffect(() => {
         if (data) {
             toast.success('Observación creada con exito');
-            refetch(); // pendiente para agregar y que me muestre los avances 
+            refetch(); // pendiente para agregar y que me muestre los avances
             setMostrarFormularioObservaciones(false)
         }
     }, [data])
@@ -400,7 +514,11 @@ const FormAgregarObservacion = ({ idAvance, setMostrarFormularioObservaciones, r
                     <span>Descripción Observación</span>
                     <textarea className='border' name="descripcionObservacion" id="" cols="50" rows="10" required></textarea>
                 </label>
-                <ButtonLoading text='Crear Observacion' loading={false} disabled={false} />
+                <ButtonLoading
+                    text='Crear Observacion'
+                    loading={false}
+                    disabled={estadoProyecto === 'ACTIVO' ? false : true}
+                />
             </form>
 
         </div>
@@ -409,93 +527,134 @@ const FormAgregarObservacion = ({ idAvance, setMostrarFormularioObservaciones, r
 
 
 
+const Observacion = ({
+    indexObservacion,
+    descripcionObservacion,
+    estadoProyecto, idAvance, refetch }) => {
 
-// const Observacion = () => {
-//     const [listaObservaciones, setListaObservaciones] = useState([]);
-
-
-//     const eliminarObservacion = (id) => {
-
-//         setListaObservaciones(listaObservaciones.filter((el) => el.props.id !== id));
-//     };
-
-//     const componenteObservacionAgregadoaLista = () => {
-
-//         const id = nanoid();// nanoid es una libreria que genera id aleatorios y unicos 
-
-//         return (
-//             //            //   props    //
-//             <FormObservacion key={id} id={id} />// key me permite que react identifique cual componente 
-//             // es por que cada componente FormObservacion  tendra un id y asi luego poder implementar la 
-//             // eliminacion por el boton de menos 
-//         )
-
-//     }
-//     return (
-//         <ObservacionContext.Provider value={{ eliminarObservacion }}> {/**contexto para poder pasar la funcion de eliminar como 
-//          * prop (value={{ eliminarObservacion  }}) y asi todo lo que este dentro de este contexto ObjContext.Provider puede utilizar 
-//          * esta funcion  eliminarObservacion 
-//          */}
-//             <div>
-//                 <div >
-//                     <div className='flex'>
-//                         <h1>
-//                             Observaciones
-//                         </h1 >
-
-//                         <i className='fas fa-plus rounded-full bg-green-500 hover:bg-green-400 text-white p-2 mx-2 cursor-pointer'
-//                             onClick={() => {
-//                                 setListaObservaciones([...listaObservaciones, componenteObservacionAgregadoaLista()])
-//                             }
-//                             }// Cada ves que le de click en el icono de fas fa-plus
-//                         // se ejecuta la funcion setListaObservaciones y ella me guarda un array, una lista con  todo lo que 
-//                         // ya tiene guardado antes, esto es gracias al spread operator (...),  mas algo nuevo 
-//                         />
-//                     </div>
-
-//                     {listaObservaciones.map((Observacion) => { // me recorre la lista de Observaciones y me muestra todo lo del  return cada vez
-//                         // recorre un elemento es decir cada elemento es un bloque de return que se renderiza y se muestra   
-//                         return (
-//                             Observacion
-//                         )
-//                     })}
-//                 </div>
-
-//             </div>
-//         </ObservacionContext.Provider>
-
-//     )
-// }
-
-// const FormObservacion = ({ id }) => {
-
-//     const { eliminarObservacion } = useObservacionContext();// forma para permitir usar la funcion de eliminarObservacion 
-
-//     return (
-//         <div className='flex'>
-//             {/* <Input name='descripcion' label='Descripcion' required={true} type='text' // componente input  */}
-
-//             <div className='w-full'>
-//                 <Input
-//                     name={`nested||Observacion||${id}||descripcionObservacion`}// el name debe ser en este formato para trabajar el userFormData
-//                     // despues del nested sigue el campo con el nombre igual en la base de datos de array embebido  en este caso es Observacion s 
-//                     // y luego el id y seguido el campo igual que en la base de datos tiene cada Observacion  como uno de sus dos atributos la descripcion 
-
-//                     label='Descripcion Observacion'
-//                     required={true}
-//                     type='text' // componente input 
-//                 />
-//             </div>
+    const [mostrarFormEditObservacion, setMostrarFormEditObservacion] = useState(false)
 
 
 
-//             <i
-//                 onClick={() => eliminarObservacion(id)}//cuando le den click en el botton de menos de cada Observacion  se 
-//                 // ejecuta la funcion de eliminarObservacion 
-//                 className='fas fa-minus rounded-full bg-red-500 hover:bg-red-400 text-white p-2 my-8 cursor-pointer mx-8' />
+    return (
+        <div className=' mx-5  my-4 bg-gray-100 p-8 rounded-lg shadow-2xl '>
+            <div className='text-black font-bold'>
+                <span className='mx-1'>
+                    Observación {indexObservacion}:
+                </span>
+                <span>
+                    {descripcionObservacion}
 
-//         </div>
+                </span>
+            </div>
 
-//     )
-// }
+            <div className='mt-11'>
+                <PrivateComponent roleList={['LIDER']}>
+                    <ButtonLoading
+                        disabled={estadoProyecto === 'ACTIVO' ? false : true}
+                        loading={false}
+                        text='Editar Observacion'
+                        onClick={() => {
+                            setMostrarFormEditObservacion(true);// cuando le damos click al lapiz me ejecuta el setEditMode y puedo editar el estado de un 
+                        }}
+                    />
+                </PrivateComponent>
+            </div>
+
+            <Dialog
+                open={mostrarFormEditObservacion}
+                onClose={() => {
+                    setMostrarFormEditObservacion(false);
+                }}>
+                <FormEditObservacion
+                    idAvance={idAvance}
+                    descripcionObservacion={descripcionObservacion}
+                    refetch={refetch}
+                    setMostrarFormEditObservacion={setMostrarFormEditObservacion}
+                    indexObservacion={indexObservacion}
+                />
+            </Dialog>
+
+        </div>
+    )
+}
+
+const FormEditObservacion = ({ idAvance, descripcionObservacion, refetch, setMostrarFormEditObservacion, indexObservacion }) => {
+
+    const { form, formData, updateFormData } = useFormData();
+    const [editarProyecto, { data: dataMutation, loading, error }] = useMutation(EDITAR_OBSERVACION);
+
+    useEffect(() => {
+        if (dataMutation) {
+            toast.success('Objetivo editado con exito');
+            refetch(); // pendiente para agregar y que me muestre los avances
+            setMostrarFormEditObservacion(false)
+        }
+    }, [dataMutation])
+
+    useEffect(() => {
+        if (error) {
+            toast.error('Error editando Objetivo');
+        }
+    }, [error]);
+
+
+    const submitForm = (e) => {
+        e.preventDefault();
+
+
+        editarProyecto({
+            variables: {
+                idAvance,
+                indexObservacion,
+                campos: formData
+
+            },
+        });
+    };
+
+    useEffect(() => {
+        console.log('data mutation', dataMutation);
+    }, [dataMutation]);
+
+
+
+    return (
+
+
+
+        <div>
+            <div className='p-4 ' >
+                <h1 className='font-bold'>Editar Observación</h1>
+
+                <form
+                    ref={form}
+                    onChange={updateFormData}
+                    onSubmit={submitForm}
+                    action=""
+                    className='flex flex-col items-center'>
+                    <label htmlFor='descripcionObservacion' className='flex flex-col my-3'>
+                        <span>Descripción Observación:</span>
+                        <textarea
+                            className='border'
+                            name="descripcionObservacion"
+                            id=""
+                            cols="50"
+                            rows="10"
+                            required
+                            defaultValue={descripcionObservacion}>
+
+                        </textarea>
+                    </label>
+
+
+                    <ButtonLoading disabled={false} loading={loading} text='Confirmar' />
+
+                </form>
+
+            </div>
+        </div>
+    )
+}
+
 export default AvancesAProyecto

@@ -6,11 +6,15 @@ const GET_AVANCES = gql`
             _id
             creadoPor {
                 nombre
+                apellido
             }  
             descripcion
             fecha
             proyecto {
                 nombre
+                estado
+                fase
+                # avances
             }
             observaciones {
                 _id
