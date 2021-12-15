@@ -39,10 +39,13 @@ const SidebarLinks = () => {
 
 // componente  boton de cerrar sesion 
 const Logout = () => {
+
   const { setToken } = useAuth();
   const deleteToken = () => {
     console.log('eliminar token');
     setToken(null);
+    window.location.reload(true) // me permite refrescar la pagina cuando se hace cierre de sesion 
+    
   };
   return (
     <li onClick={() => deleteToken()}>

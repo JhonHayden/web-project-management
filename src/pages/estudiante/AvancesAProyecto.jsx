@@ -97,7 +97,7 @@ useEffect(() => {
 
         return (
 
-            <div> el proyecto no tiene avances registrados </div>
+            <div> </div>
         )
     }
 
@@ -309,7 +309,7 @@ const AccordionAvance = ({ avance, refetch }) => {
                             <h1 className='self-center font-bold text-xl mb-3'>Observaciones del lider</h1>
                             {avance.observaciones ? (avance.observaciones.map((observacion, index) => {
 
-                                const x = index + 1
+                                const x = index 
 
                                 return (
                                     <div>
@@ -540,7 +540,7 @@ const Observacion = ({
         <div className=' mx-5  my-4 bg-gray-100 p-8 rounded-lg shadow-2xl '>
             <div className='text-black font-bold'>
                 <span className='mx-1'>
-                    Observación {indexObservacion}:
+                    Observación {indexObservacion + 1}:
                 </span>
                 <span>
                     {descripcionObservacion}
@@ -607,7 +607,7 @@ const FormEditObservacion = ({ idAvance, descripcionObservacion, refetch, setMos
             variables: {
                 idAvance,
                 indexObservacion,
-                campos: formData
+                descripcionObservacion: formData.descripcionObservacion
 
             },
         });
