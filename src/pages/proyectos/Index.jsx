@@ -217,7 +217,7 @@ const AccordionProyecto = ({ proyecto, refetch }) => {// recibe como prop o inpu
                      */}
                         <div className='flex justify-between'>
                             <ButtonLoading
-                                disabled={proyecto.estado === 'ACTIVO' ? false : true}
+                                disabled={proyecto.fase === 'TERMINADO' ? true : false}
                                 loading={false}
                                 text='Editar estado'
                                 onClick={() => {
