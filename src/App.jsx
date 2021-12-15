@@ -30,8 +30,8 @@ import FormEditarPerfil from 'pages/perfil/FormEditarPerfil';
 
 
 const httpLink = createHttpLink({ // entra a la url del servidor de apollo sever .. es decir mi backend 
-  uri: 'http://localhost:4000/graphql', // url servidor backend o api local 
-  // uri: 'https://servidor-backend-gql.herokuapp.com/graphql', //url servidor backend o api  desplegada 
+  // uri: 'http://localhost:4000/graphql', // url servidor backend o api local 
+  uri: 'https://servidor-backend-gql.herokuapp.com/graphql', //url servidor backend o api  desplegada 
 });
 
 const authLink = setContext((_, { headers }) => {// setContext es un contexto de apollo client para permitirme
