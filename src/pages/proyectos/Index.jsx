@@ -97,7 +97,7 @@ const AccordionProyecto = ({ proyecto, refetch }) => {// recibe como prop o inpu
     const [mostrarFormEditarEstadoProjectRolAdmin, setMostrarFormEditarEstadoProjectRolAdmin] = useState(false);// estado para permitir mostrar un dialog
     const [mostrarFormEditarProjectRolLider, setMostrarFormEditarProjectRolLider] = useState(false);// estado para permitir mostrar un dialog
     const [mostrarEdiccionFaseATerminado, setMostrarEdiccionFaseATerminado] = useState(false);// estado para permitir mostrar un dialog
-// const [cantidadAvances,setCantidadAvances] = useState(0)
+    // const [cantidadAvances,setCantidadAvances] = useState(0)
     // const [editMode, setEditMode] = useState(false)
 
 
@@ -202,11 +202,11 @@ const AccordionProyecto = ({ proyecto, refetch }) => {// recibe como prop o inpu
                                 setCantidadAvances(x)
 
                             })} */}
-                             <PrivateComponent roleList={['LIDER']}>
-                            <Link to={`/proyectosinscritos/avances/${proyecto._id}`}>
-                                {/* <span className='uppercase font-bold text-gray-100  '>Avances( {cantidadAvances})</span> */}
-                                <span className='uppercase font-bold text-gray-100  '>Avances ({proyecto.avances.length})</span>
-                            </Link>
+                            <PrivateComponent roleList={['LIDER']}>
+                                <Link to={`/proyectosinscritos/avances/${proyecto._id}`}>
+                                    {/* <span className='uppercase font-bold text-gray-100  '>Avances( {cantidadAvances})</span> */}
+                                    <span className='uppercase font-bold text-gray-100  '>Avances ({proyecto.avances.length})</span>
+                                </Link>
                             </PrivateComponent>
                         </div>
                     </div>
@@ -217,6 +217,7 @@ const AccordionProyecto = ({ proyecto, refetch }) => {// recibe como prop o inpu
                      */}
                         <div className='flex justify-between'>
                             <ButtonLoading
+                                disabled={proyecto.estado === 'ACTIVO' ? false : true}
                                 loading={false}
                                 text='Editar estado'
                                 onClick={() => {
