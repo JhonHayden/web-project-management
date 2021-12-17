@@ -24,7 +24,7 @@ import {
 
 const ProyectosInscritos = () => {
 
-    const { data, loading, error } = useQuery(GET_INSCRIPCIONES); // consulta y query a las inscripciones 
+    const { data, loading, error, refetch } = useQuery(GET_INSCRIPCIONES); // consulta y query a las inscripciones 
 
     // const [ningunaInscripcion, setNingunaInscripcion] = useState(false)
     useEffect(() => {
@@ -72,7 +72,10 @@ const ProyectosInscritos = () => {
                                     return (
                                         <div>
 
-                                            <AccordionProyecto proyecto={proyectoInscrito.proyecto} />
+                                            <AccordionProyecto 
+                                            proyecto={proyectoInscrito.proyecto}
+                                            refetch={refetch}
+                                            />
 
 
                                         </div>
@@ -103,7 +106,7 @@ const ProyectosInscritos = () => {
 }
 
 
-const AccordionProyecto = ({ proyecto }) => {// recibe como prop o input cada proyecto 
+const AccordionProyecto = ({ proyecto, refetch }) => {// recibe como prop o input cada proyecto 
 
     const [showDialog, setShowDialog] = useState(false);// estado para permitir mostrar un dialog
 
@@ -217,7 +220,9 @@ const AccordionProyecto = ({ proyecto }) => {// recibe como prop o input cada pr
                 <FormularioAvance
                     proyecto={proyecto._id}
                     nombreProyecto={proyecto.nombre}
-                    setShowDialog={setShowDialog} />
+                    setShowDialog={setShowDialog}
+                    refetch={refetch}
+                    />
             </Dialog>
 
 
@@ -226,7 +231,7 @@ const AccordionProyecto = ({ proyecto }) => {// recibe como prop o input cada pr
 }
 
 
-const FormularioAvance = ({ proyecto, nombreProyecto, setShowDialog }) => {
+const FormularioAvance = ({ proyecto, nombreProyecto, setShowDialog, refetch }) => {
 
     const { form, formData, updateFormData } = useFormData();
     const [crearAvance, { data, loading, error }] = useMutation(CREAR_AVANCE);
@@ -238,6 +243,7 @@ const FormularioAvance = ({ proyecto, nombreProyecto, setShowDialog }) => {
             toast.success('Avance creado con exito');
             //   refetch(); // pendiente para agregar y que me muestre los avances 
             setShowDialog(false)
+            refetch()
         }
     }, [data]);
 

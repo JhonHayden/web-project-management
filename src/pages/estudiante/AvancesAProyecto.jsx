@@ -42,17 +42,19 @@ const AvancesAProyecto = () => {
         data: dataQueryAvances,
         loading: loadingQueryAvances,
         error: errorQueryAvances,
-        refetch } = useQuery(GET_AVANCES, { variables: { idProyecto } })
+        refetch:refetchAvances } = useQuery(GET_AVANCES, { variables: { idProyecto } })
 
 
     const {
         data: dataQueryProyecto,
         loading: loadingQueryProyecto,
-        error: errorQueryProyecto, } = useQuery(GET_PROYECTO, { variables: { idProyecto } })
+        error: errorQueryProyecto,
+        refetch:refetchProyecto } = useQuery(GET_PROYECTO, { variables: { idProyecto } })
 
 
 useEffect(() => {
-    refetch()
+    refetchAvances()
+    refetchProyecto()
 }, [])
 
     useEffect(() => {
@@ -88,7 +90,7 @@ useEffect(() => {
                 <AccordionProyecto
                     dataQueryAvances={dataQueryAvances}
                     proyecto={dataQueryProyecto.Proyecto}
-                    refetch={refetch}
+                    refetchAvances={refetchAvances}
                 />
 
             </div>
@@ -104,7 +106,7 @@ useEffect(() => {
 
 }
 
-const AccordionProyecto = ({ dataQueryAvances, proyecto, refetch }) => {
+const AccordionProyecto = ({ dataQueryAvances, proyecto, refetchAvances }) => {
 
 
     return (
@@ -193,7 +195,7 @@ const AccordionProyecto = ({ dataQueryAvances, proyecto, refetch }) => {
                     <Avances
                         proyecto={proyecto}
                         dataQueryAvances={dataQueryAvances}
-                        refetch={refetch}
+                        refetchAvances={refetchAvances}
 
                     />
 
@@ -206,7 +208,7 @@ const AccordionProyecto = ({ dataQueryAvances, proyecto, refetch }) => {
 
 }
 
-const Avances = ({ proyecto, dataQueryAvances, refetch }) => {
+const Avances = ({ proyecto, dataQueryAvances, refetchAvances }) => {
 
     return (
         <div>
@@ -219,7 +221,7 @@ const Avances = ({ proyecto, dataQueryAvances, refetch }) => {
                         <AccordionAvance
                             key={nanoid()}
                             avance={avance}
-                            refetch={refetch} />
+                            refetchAvances={refetchAvances} />
                     )
                 })
             }
@@ -229,7 +231,7 @@ const Avances = ({ proyecto, dataQueryAvances, refetch }) => {
 }
 
 
-const AccordionAvance = ({ avance, refetch }) => {
+const AccordionAvance = ({ avance, refetchAvances }) => {
 
     const [showDialog, setShowDialog] = useState(false);// estado para permitir mostrar un dialog
     const [mostrarFormularioObservaciones, setMostrarFormularioObservaciones] = useState(false);// estado para permitir mostrar un dialog
@@ -321,7 +323,7 @@ const AccordionAvance = ({ avance, refetch }) => {
                                                 descripcionObservacion={observacion.descripcionObservacion}
                                                 estadoProyecto={avance.proyecto.estado}
                                                 idAvance={avance._id}
-                                                refetch={refetch}
+                                                refetchAvances={refetchAvances}
 
 
                                             />
@@ -356,7 +358,7 @@ const AccordionAvance = ({ avance, refetch }) => {
                             fecha={avance.fecha}
                             descripcion={avance.descripcion}
                             setShowDialog={setShowDialog}
-                            refetch={refetch}
+                            refetchAvances={refetchAvances}
                             estadoProyecto={avance.proyecto.estado} />
                     </PrivateComponent>
 
@@ -371,7 +373,7 @@ const AccordionAvance = ({ avance, refetch }) => {
                         <FormAgregarObservacion
                             idAvance={avance._id}
                             setMostrarFormularioObservaciones={setMostrarFormularioObservaciones}
-                            refetch={refetch}
+                            refetchAvances={refetchAvances}
                             estadoProyecto={avance.proyecto.estado}
 
                         />
@@ -382,7 +384,7 @@ const AccordionAvance = ({ avance, refetch }) => {
     )
 }
 
-const FormEditAvanceEstudiante = ({ _id, fecha, descripcion, setShowDialog, refetch, estadoProyecto }) => {
+const FormEditAvanceEstudiante = ({ _id, fecha, descripcion, setShowDialog, refetchAvances, estadoProyecto }) => {
 
     const { form, formData, updateFormData } = useFormData();
     const [editarAvance, { data: dataMutation, loading, error }] = useMutation(EDITAR_AVANCE);
@@ -392,9 +394,9 @@ const FormEditAvanceEstudiante = ({ _id, fecha, descripcion, setShowDialog, refe
     useEffect(() => {
         if (dataMutation) {
             toast.success('Avance editado con exito');
-            //   refetch(); // pendiente para agregar y que me muestre los avances 
+            //   refetchAvances(); // pendiente para agregar y que me muestre los avances 
             setShowDialog(false)
-            refetch()
+            refetchAvances()
         }
     }, [dataMutation]);
 
@@ -460,7 +462,7 @@ const FormEditAvanceEstudiante = ({ _id, fecha, descripcion, setShowDialog, refe
 
 
 
-const FormAgregarObservacion = ({ idAvance, setMostrarFormularioObservaciones, refetch, estadoProyecto }) => {
+const FormAgregarObservacion = ({ idAvance, setMostrarFormularioObservaciones, refetchAvances, estadoProyecto }) => {
 
     const { form, formData, updateFormData } = useFormData();
 
@@ -472,7 +474,7 @@ const FormAgregarObservacion = ({ idAvance, setMostrarFormularioObservaciones, r
     useEffect(() => {
         if (data) {
             toast.success('Observación creada con exito');
-            refetch(); // pendiente para agregar y que me muestre los avances
+            refetchAvances(); // pendiente para agregar y que me muestre los avances
             setMostrarFormularioObservaciones(false)
         }
     }, [data])
@@ -530,7 +532,7 @@ const FormAgregarObservacion = ({ idAvance, setMostrarFormularioObservaciones, r
 const Observacion = ({
     indexObservacion,
     descripcionObservacion,
-    estadoProyecto, idAvance, refetch }) => {
+    estadoProyecto, idAvance, refetchAvances }) => {
 
     const [mostrarFormEditObservacion, setMostrarFormEditObservacion] = useState(false)
 
@@ -569,7 +571,7 @@ const Observacion = ({
                 <FormEditObservacion
                     idAvance={idAvance}
                     descripcionObservacion={descripcionObservacion}
-                    refetch={refetch}
+                    refetchAvances={refetchAvances}
                     setMostrarFormEditObservacion={setMostrarFormEditObservacion}
                     indexObservacion={indexObservacion}
                 />
@@ -579,7 +581,7 @@ const Observacion = ({
     )
 }
 
-const FormEditObservacion = ({ idAvance, descripcionObservacion, refetch, setMostrarFormEditObservacion, indexObservacion }) => {
+const FormEditObservacion = ({ idAvance, descripcionObservacion, refetchAvances, setMostrarFormEditObservacion, indexObservacion }) => {
 
     const { form, formData, updateFormData } = useFormData();
     const [editarProyecto, { data: dataMutation, loading, error }] = useMutation(EDITAR_OBSERVACION);
@@ -587,7 +589,7 @@ const FormEditObservacion = ({ idAvance, descripcionObservacion, refetch, setMos
     useEffect(() => {
         if (dataMutation) {
             toast.success('Objetivo editado con exito');
-            refetch(); // pendiente para agregar y que me muestre los avances
+            refetchAvances(); // pendiente para agregar y que me muestre los avances
             setMostrarFormEditObservacion(false)
         }
     }, [dataMutation])
