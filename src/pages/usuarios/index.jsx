@@ -32,7 +32,7 @@ const IndexUsuarios = () => {
   }, [])
 
   useEffect(() => {
-    console.log('data servidor', data);// estamos escuchando la variable data para mostrarla en consola si data sufre un 
+    // console.log('data servidor', data);// estamos escuchando la variable data para mostrarla en consola si data sufre un 
     // cambio o se modifica se imprime en consola 
   }, [data]);
 

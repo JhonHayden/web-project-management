@@ -13,7 +13,6 @@ import PrivateComponent from 'components/PrivateComponent';
 import { CREAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 import { useUser } from 'context/userContext';
 import { toast } from 'react-toastify';
-import { nanoid } from 'nanoid';
 import Input from 'components/Input';// componente input
 import {
     AccordionStyled,
@@ -28,8 +27,11 @@ const IndexProyectos = () => {
 
 
     useEffect(() => {
-        console.log('datos proyecto', queryData);
+        // // console.log('datos proyecto', queryData);
     }, [queryData]);
+    useEffect(() => {
+        refetch()
+    }, []);
 
     if (loading) return <div>Cargando...</div>;//
 
@@ -63,10 +65,33 @@ const IndexProyectos = () => {
                             <div
                                 key={proyecto._id}
                                 className=' items-center  gap-2 rounded-md'>
-                                <AccordionProyecto
 
-                                    proyecto={proyecto}
-                                    refetch={refetch} />
+
+                                <PrivateComponent roleList={['ADMINISTRADOR']}>
+                                    <AccordionProyecto
+
+                                        proyecto={proyecto}
+                                        refetch={refetch} />
+
+                                </PrivateComponent>
+
+
+
+                                <PrivateComponent roleList={['LIDER','ESTUDIANTE']}>
+                                    {proyecto.fase === 'NULA' ? (
+                                        <>
+
+                                        </>
+                                    ) : (
+
+                                        <AccordionProyecto
+
+                                            proyecto={proyecto}
+                                            refetch={refetch} />
+
+
+                                    )}
+                                </PrivateComponent>
                             </div>
                         )
                     })}
@@ -279,7 +304,7 @@ const AccordionProyecto = ({ proyecto, refetch }) => {// recibe como prop o inpu
                         {proyecto.objetivos.map((objetivo, index) => {
 
                             const indexObjetivo = index;
-                            // console.log(indexObjetivo)
+                            // // console.log(indexObjetivo)
 
                             return (
 
@@ -358,7 +383,7 @@ const FormEditProyectoRolAdmin = ({ _id }) => {
     };
 
     useEffect(() => {
-        console.log('data mutation', dataMutation);
+        // // console.log('data mutation', dataMutation);
     }, [dataMutation]);
 
     return (
@@ -420,7 +445,7 @@ const FormEditFaseProyectoATerminado = ({ _id, setMostrarEdiccionFaseATerminado,
 
             refetch()
         }
-        // console.log('data mutation', dataMutation);
+        // // console.log('data mutation', dataMutation);
     }, [dataMutation]);
 
     return (
@@ -494,7 +519,22 @@ const FormEditProyectoRolLider = ({
     const submitForm = (e) => {
         e.preventDefault();
 
+        console.log("datos a enviar para editar un proyecto " ,formData)
+        
+        
+        if(!formData.presupuesto){
+            console.log(formData.presupuesto ,"si soy el null del presupuesto  ")
+            console.log(presupuesto ,"soy presupuesto anterior ")
+            
+            formData.presupuesto=presupuesto
+            
+        }
+
+        
         formData.presupuesto = parseFloat(formData.presupuesto);
+
+        console.log("datos a enviar para editar un proyecto " ,formData)
+
 
         editarProyecto({
             variables: {
@@ -506,7 +546,7 @@ const FormEditProyectoRolLider = ({
     };
 
     useEffect(() => {
-        console.log('data mutation', dataMutation);
+        // // console.log('data mutation', dataMutation);
     }, [dataMutation]);
 
     return (
@@ -535,7 +575,7 @@ const FormEditProyectoRolLider = ({
 
 
 
-                <ButtonLoading disabled={false} loading={loading} text='Confirmar' />
+                <ButtonLoading disabled={Object.keys(formData).length === 0} loading={loading} text='Confirmar' />
 
             </form>
 
@@ -631,6 +671,13 @@ const FormEditObjetivosRolLider = ({ idProyecto, descripcion, refetch, setMostra
         }
     }, [error]);
 
+    // useEffect(() => {
+    //     effect
+    //     return () => {
+    //         cleanup
+    //     }
+    // }, [input])
+
 
     const submitForm = (e) => {
         e.preventDefault();
@@ -647,7 +694,7 @@ const FormEditObjetivosRolLider = ({ idProyecto, descripcion, refetch, setMostra
     };
 
     useEffect(() => {
-        console.log('data mutation', dataMutation);
+        // // console.log('data mutation', dataMutation);
     }, [dataMutation]);
 
 
@@ -681,7 +728,7 @@ const FormEditObjetivosRolLider = ({ idProyecto, descripcion, refetch, setMostra
                     </label>
 
 
-                    <ButtonLoading disabled={false} loading={loading} text='Confirmar' />
+                    <ButtonLoading disabled={Object.keys(formData).length === 0} loading={loading} text='Confirmar' />
 
                 </form>
 
@@ -696,9 +743,9 @@ const InscripcionProyecto = ({ idProyecto, estadoProyecto, proyectoInscripciones
     const [estadoInscripcion, setEstadoInscripcion] = useState('');// guardare el estado de la inscripcion existente retornada por el filter
     const [crearInscripcion, { data, loading, error }] = useMutation(CREAR_INSCRIPCION);
     const { userData } = useUser();// permite traer la informacion del usuario que ah  iniciado sesion
-    // console.log("datos del usuario que inicio sesion :", userData)
-    // console.log("idproyecto", idProyecto)
-    console.log("proyectoInscripciones al proyecto: ", proyectoInscripciones)
+    // // console.log("datos del usuario que inicio sesion :", userData)
+    // // console.log("idproyecto", idProyecto)
+    // // console.log("proyectoInscripciones al proyecto: ", proyectoInscripciones)
 
 
 
@@ -713,7 +760,7 @@ const InscripcionProyecto = ({ idProyecto, estadoProyecto, proyectoInscripciones
             // // parentesis del metodo filter(condicion) y en el ejemplo la condicion es (el) => el.estudiante._id === userData._id
             // // de cada elemento (el) de la inscripcion, cada elemento es un objeto de inscripcion y miro la propiedad estudiante y luego 
             // // su id y lo comparo con el id del usuario que inicio sesion y si es igual me lo retorna en la varible filtro 
-            // // console.log ("filtro: ", filtro)
+            // // // console.log ("filtro: ", filtro)
 
             // if (filtro.length > 0) { // tengo que validar si la lista del filtro no esta vacia para evitar los null si esta vacia no 
             //     // podre acceder obviamente a su propiedad estado dado que no existe 
@@ -725,7 +772,7 @@ const InscripcionProyecto = ({ idProyecto, estadoProyecto, proyectoInscripciones
 
     useEffect(() => {
         if (data) {// data es la respuesta de la api a la mutacion de crear incripcion
-            console.log("Datos retornados de la mutacion crear inscripcion: ", data);
+            // // console.log("Datos retornados de la mutacion crear inscripcion: ", data);
 
             toast.success('inscripcion creada con exito');
         }
@@ -737,7 +784,7 @@ const InscripcionProyecto = ({ idProyecto, estadoProyecto, proyectoInscripciones
         crearInscripcion({ variables: { proyecto: idProyecto } });// ejecuta la mutacion y le paso las 
         //   varibles para crear una inscripcion 
 
-        console.log("estado inscripcio: ")
+        // // console.log("estado inscripcio: ")
     };
 
     return (

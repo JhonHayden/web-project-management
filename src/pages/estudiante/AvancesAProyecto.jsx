@@ -56,10 +56,10 @@ useEffect(() => {
 }, [])
 
     useEffect(() => {
-        console.log(dataQueryProyecto)
+        // console.log(dataQueryProyecto)
     }, [dataQueryProyecto])
     useEffect(() => {
-        console.log("dataQueryAvances: ", dataQueryAvances)
+        // console.log("dataQueryAvances: ", dataQueryAvances)
     }, [dataQueryAvances])
 
     if (loadingQueryAvances) return <div>Cargando...</div>;//
@@ -406,8 +406,8 @@ const FormEditAvanceEstudiante = ({ _id, fecha, descripcion, setShowDialog, refe
 
     const submitForm = (e) => {
         e.preventDefault();
-        console.log("formData de avance", formData)
-        console.log("id avance", _id)
+        // console.log("formData de avance", formData)
+        // console.log("id avance", _id)
 
         editarAvance({
             variables: {
@@ -419,7 +419,7 @@ const FormEditAvanceEstudiante = ({ _id, fecha, descripcion, setShowDialog, refe
     };
 
     useEffect(() => {
-        console.log('data mutation', dataMutation);
+        // console.log('data mutation', dataMutation);
     }, [dataMutation]);
 
     return (
@@ -487,7 +487,7 @@ const FormAgregarObservacion = ({ idAvance, setMostrarFormularioObservaciones, r
     const submitForm = (e) => {
         e.preventDefault();
 
-        console.log("observaciones que agregare", formData)
+        // console.log("observaciones que agregare", formData)
 
 
 
@@ -614,7 +614,7 @@ const FormEditObservacion = ({ idAvance, descripcionObservacion, refetch, setMos
     };
 
     useEffect(() => {
-        console.log('data mutation', dataMutation);
+        // console.log('data mutation', dataMutation);
     }, [dataMutation]);
 
 

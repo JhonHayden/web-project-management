@@ -30,8 +30,8 @@ import FormEditarPerfil from 'pages/perfil/FormEditarPerfil';
 
 
 const httpLink = createHttpLink({ // entra a la url del servidor de apollo sever .. es decir mi backend 
-  // uri: 'http://localhost:4000/graphql', // url servidor backend o api local 
-  uri: 'https://servidor-backend-gql.herokuapp.com/graphql', //url servidor backend o api  desplegada 
+  uri: 'http://localhost:4000/graphql', // url servidor backend o api local 
+  // uri: 'https://servidor-backend-gql.herokuapp.com/graphql', //url servidor backend o api  desplegada 
 });
 
 const authLink = setContext((_, { headers }) => {// setContext es un contexto de apollo client para permitirme
@@ -89,7 +89,7 @@ function App() {
       localStorage.removeItem('token')// me elimina el token del local storage 
     }
   }
-  // console.log("soy user Data : ", userData)
+  // // console.log("soy user Data : ", userData)
 
 
   useEffect(() => {
@@ -98,8 +98,8 @@ function App() {
     // del token AuthContext
 
     // const token = authToken
-    // console.log('token del usuario si soy yo : ', token)
-    // console.log("soy el usuario :",jwt_decode(token))
+    // // console.log('token del usuario si soy yo : ', token)
+    // // console.log("soy el usuario :",jwt_decode(token))
     if (authToken) {// evidentemente primero preguntamos si existe un token guardado en el contexto del token AuthContext
       // para poder asi si decodificar
 
@@ -109,8 +109,8 @@ function App() {
       // en el userData con el metodo de guardar o ser de el y es setUserData
       // setUserData( userDataOnLine)
 
-      // // console.log("soy user Data inicial : ", userDataOnLine)
-      // console.log("soy user Data lero lero : ", userData)
+      // // // console.log("soy user Data inicial : ", userDataOnLine)
+      // // console.log("soy user Data lero lero : ", userData)
 
       setUserData({
         _id: userDataOnLine._id,
@@ -120,7 +120,7 @@ function App() {
         correo: userDataOnLine.correo,
         rol: userDataOnLine.rol,
       });
-      console.log("soy user Data: ", userData)
+      // console.log("soy user Data: ", userData)
     }
   }, [authToken])
 

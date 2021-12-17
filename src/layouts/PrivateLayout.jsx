@@ -33,14 +33,14 @@ const PrivateLayout = () => {
   }, [])
 
   useEffect(() => {
-    console.log("SOY EL REPONSE(return) DE LA MUTACION actualizarToken =", dataMutation)//dataMutation es el response de la mutacion actualizarToken del backend, es el return 
+    // console.log("SOY EL REPONSE(return) DE LA MUTACION actualizarToken =", dataMutation)//dataMutation es el response de la mutacion actualizarToken del backend, es el return 
     // del resolver de la mutacion actualizarToken en el backend 
     if (dataMutation) {// si existe dataMutation, el cual es un objeto con contenido en varias capas, si puedo preguntar
       //  luego por su contenido mas interno  si no, no 
       const tokenActualizado = dataMutation.actualizarToken.token;
       if (tokenActualizado) {
         setToken(tokenActualizado);// guardo el token nuevo en el contexto global y tambien en el local storage
-        console.log("Soy el token actualizado = ", tokenActualizado)
+        // console.log("Soy el token actualizado = ", tokenActualizado)
       } else {// si no existe token guardeme en el estado global en el contexto (nst { authToken, setAuthToken, setToken } = useAuth();).. null 
         setToken(null)
         navigate('/auth/login');// si no existe token me dirige al home 
@@ -52,8 +52,8 @@ const PrivateLayout = () => {
 
   useEffect(() => {
 
-    console.log('TOKEN ACTUAL: ', authToken)
-    console.log('loadingMutation: ', loadingMutation)
+    // console.log('TOKEN ACTUAL: ', authToken)
+    // console.log('loadingMutation: ', loadingMutation)
 
   }, [authToken])
 

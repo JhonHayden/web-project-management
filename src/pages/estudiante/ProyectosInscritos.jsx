@@ -26,8 +26,9 @@ const ProyectosInscritos = () => {
 
     const { data, loading, error } = useQuery(GET_INSCRIPCIONES); // consulta y query a las inscripciones 
 
+    // const [ningunaInscripcion, setNingunaInscripcion] = useState(false)
     useEffect(() => {
-        console.log("Data: ", data)
+        // console.log("Data: ", data)
     }, [data])
 
 
@@ -44,8 +45,15 @@ const ProyectosInscritos = () => {
         if (data.Inscripciones.filter((el) => el.estado === 'ACEPTADA')) {
 
             const misProyectosInscrito = data.Inscripciones.filter((el) => el.estado === 'ACEPTADA')
+            // console.log(misProyectosInscrito.length==0 )
+            // if (misProyectosInscrito.length == 0) {
 
-            console.log("misProyectosInscrito:", misProyectosInscrito)
+            //     setNingunaInscripcion(true)
+            // }
+
+            // console.log("misProyectosInscrito:", misProyectosInscrito)
+            console.log(data.Inscripciones.filter((el) => el.estado === 'ACEPTADA'))
+
 
             return (
 
@@ -58,6 +66,7 @@ const ProyectosInscritos = () => {
 
                                 <h1 className='text-4xl font-extrabold '>Mis proyectos</h1>
                             </div>
+                            
                             {misProyectosInscrito &&
                                 misProyectosInscrito.map((proyectoInscrito) => {
                                     return (
@@ -222,7 +231,7 @@ const FormularioAvance = ({ proyecto, nombreProyecto, setShowDialog }) => {
     const { form, formData, updateFormData } = useFormData();
     const [crearAvance, { data, loading, error }] = useMutation(CREAR_AVANCE);
 
-    console.log("proyecto", proyecto)
+    // console.log("proyecto", proyecto)
 
     useEffect(() => {
         if (data) {
@@ -242,7 +251,7 @@ const FormularioAvance = ({ proyecto, nombreProyecto, setShowDialog }) => {
     const submitForm = (e) => {
         e.preventDefault();
 
-        console.log("formData de avance", formData)
+        // console.log("formData de avance", formData)
 
         crearAvance({
             variables: {

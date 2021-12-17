@@ -31,7 +31,7 @@ const NuevoProyecto = () => {
 
 
     useEffect(() => {// escucha la respuesta del backend a la mutacion y me imprime en consola esta respuesta 
-        console.log('data mutation', mutationData);
+        // console.log('data mutation', mutationData);
     });
 
 
@@ -56,7 +56,7 @@ const NuevoProyecto = () => {
 
     useEffect(() => {
         if (mutationError) {
-            toast.error('Error creando la observación');
+            toast.error('Error creando el proyecto, nombre de proyecto ya usado');
         }
     }, [mutationError]);
 
@@ -99,7 +99,7 @@ const NuevoProyecto = () => {
 
         formData.presupuesto = parseFloat(formData.presupuesto); // me permite convertir el string del presupuesto en float porque el 
         // backend espera un float no un string 
-        console.log("datos enviados al api: ", formData)// mostramos en consola la data del formulario que sera enviado al backend por medio 
+        // console.log("datos enviados al api: ", formData)// mostramos en consola la data del formulario que sera enviado al backend por medio 
         // de la mutacion crearProyecto
 
 

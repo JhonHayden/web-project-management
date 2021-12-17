@@ -48,9 +48,11 @@ const Login = () => {
 
                 toast.error('Contraseña incorrecta')
 
-            } else {
+            } else if (dataMutation.login.error === 'No estas autorizado todavía'){
                 toast.error('No estas autorizado todavía')
 
+            }else {
+                toast.error('Correo no registrado')
             }
         }
     }, [dataMutation, setToken, navigate]);

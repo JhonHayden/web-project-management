@@ -19,12 +19,12 @@ const IndexInscripciones = () => {
   const { data, loading, error, refetch } = useQuery(GET_INSCRIPCIONES); // consulta y query a las inscripciones 
 
 
-  console.log("Inscripciones con el console.log : ", data)
+  // console.log("Inscripciones con el // console.log : ", data)
 
 
   useEffect(() => {
 
-    console.log("Inscripciones con el usEffect : ", data)
+    // console.log("Inscripciones con el usEffect : ", data)
   }, [data])
 
   if (loading) return <div>Cargando...</div>;//

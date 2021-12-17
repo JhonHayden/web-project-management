@@ -36,10 +36,10 @@ const Register = () => {
   const submitForm = (e) => {
     // dentro de es funcion se implementa la mutacion dado que necesito que se registre un usuario cuando 
     // le oprima el boton de submit
-    // console.log('form data', formData);// formData es la informacion capturada de los inputs del 
+    // // console.log('form data', formData);// formData es la informacion capturada de los inputs del 
     // formulario despues de hacer el evento onSubmit
     e.preventDefault();// pendiente!!! 
-    console.log('enviar datos al backend', formData);
+    // console.log('enviar datos al backend', formData);
     registro({ variables: formData });// ejecuto la mutacion y le paso todos lo datos del formulario 
   };
 
@@ -47,7 +47,7 @@ const Register = () => {
     // trae dataMutation luego de ejecutarse la mutacion de registro . en un principio dataMutation no tiene ningun 
     // valor pero luego de ejecutarse la mutacion de registro esta tiene el response del backend el cual es el token 
     // y con el useEffect puedo ver este cambio y asi ejecutar lo siguiente y es guardar el token y luego direccionar a el home 
-    // console.log('data mutation', dataMutation); //  data mutation es la respuesta a la mutacion (contiene 
+    // // console.log('data mutation', dataMutation); //  data mutation es la respuesta a la mutacion (contiene 
     //  el token  de autenticacion) 
     if (dataMutation) {// si dataMutation tiene contenido se ejecuta  lo siguiente esto es para verificar si es null y no me
       // salte error en la siguiente if .. dado que en un principio dataMutation es null entonces el siguiente if 
@@ -76,7 +76,7 @@ const Register = () => {
   //   if (errorMutation) {
 
   //     // setError(true)
-  //     // console.log("error:", errorMutation)
+  //     // // console.log("error:", errorMutation)
   //     // toast.error("Usuario ya registrado")
   //     // navigate('/auth/login'); 
   //   }

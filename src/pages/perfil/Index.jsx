@@ -16,7 +16,7 @@ const IndexPerfil = () => {
   useEffect(() => {
     if (data) {
 
-      console.log("informacion personal:", data)
+      // console.log("informacion personal:", data)
     }
   }, [data])
 

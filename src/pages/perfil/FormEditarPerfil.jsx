@@ -49,7 +49,7 @@ const FormEditarPerfil = () => {
     // rapido
   });
 
-  console.log(queryData);
+  // console.log(queryData);
 
   const [editarUsuario, { data: mutationData, loading: mutationLoading, error: mutationError }] =
     useMutation(EDITAR_USUARIO); // declarion del hook que me permite usar las mutaciones
@@ -66,17 +66,17 @@ const FormEditarPerfil = () => {
   //se le puede cambiar el nombre a las variables que retorna el hook useMutation de esta forma:
   //  data: mutationData, loading: mutationLoading, error: mutationError
 
-  // console.log('form data', formData)
+  // // console.log('form data', formData)
 
 
 
   const submitForm = (e) => {
     e.preventDefault(); // me permite hacer validaciones de campos vacios
-    // console.log('form data', formData);// formData es la informacion capturada de los inputs del
+    // // console.log('form data', formData);// formData es la informacion capturada de los inputs del
     // formulario despues de hacer el evento onSubmit
 
 
-    console.log('form data', formData)
+    // console.log('form data', formData)
     editarUsuario({// ejecuta la mutacion y le pasa las variables a modificar el _id es el usuario a editar
       // y el formData que tiene los campos editados que se registraron en cada input del formulario
       variables: { _id, ...formData }, // ... significa ponga todo lo mismo que esta en formData el cual tiene
