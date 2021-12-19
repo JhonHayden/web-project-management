@@ -4,13 +4,13 @@ FROM node:14
 
 # WORKDIR me permite y le ordena al contenedor crear dentro del contenedor una carpeta, para nosotros, dentro de esta 
 # guardar toda nuestra aplicacion  (Ruta donde voy a guardar mi aplicacion dentro del contenedor)
-WORKDIR /app
+WORKDIR /usr/src
 
 # Vamos a copiar todos los archivos de la aplicacion en el contendor en orden de importancia
 
 # COPY me copia los archivos que le indique el en source de mi computador o  mi apliccaion 
 # en la ruta raiz del WORKDIR..   ./ le indica la ruta a donde copiarlo y es en la carpeta raiz del 
-# WORKDIR en decir /app en este caso 
+# WORKDIR en decir /usr/src en este caso 
 # se copia primero el package.json para orden de que lo primero es instalar las dependecias y en el 
 # package.json estan entonces por eso 
 COPY package.json ./
@@ -24,7 +24,7 @@ COPY yarn.lock ./
 COPY ./ ./
 # y despues copio todos los demas archivos de la aplicacion con la expresion ./ ./ le indicamos que son todos los demas
 # archivos .. es decir con ./ ./ le indicamos copie todos los demas archivos de la aplicacion en el contenedor dentro 
-# de la ruta o carpeta /app indicada en el WORKDIR
+# de la ruta o carpeta /usr/src indicada en el WORKDIR
 
 # lo siguente es ejecutar el comando para que instale todas la dependecias del package.json y 
 # se le indica con el comando RUN seguido del comando yarn install 
